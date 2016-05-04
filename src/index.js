@@ -31,12 +31,16 @@ class Main extends React.Component {
 
     return (
       <div>
+
         <div>Location:</div>
         <div id="location"></div>
         <div>Local weather:</div>
         <div id="local-weather"></div>
         <div>Temperature:</div>
         <div id="temperature"></div>
+
+        <input id="input-field" type="text" placeholder="Kharkiv"/>
+        <div id="weather-card"></div>
       </div>
     )
   }

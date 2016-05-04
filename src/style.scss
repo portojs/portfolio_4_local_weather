@@ -1,0 +1,29 @@
+body {
+  font-family: 'Alegreya Sans', sans-serif;
+  color: #1D3557;
+}
+
+#input-field {
+  background-color: #F1FAEE;
+  color: #1D3557;
+  font-family: 'Alegreya Sans', sans-serif;
+  font-size: 2.5em;
+  text-align: center;
+  display: block;
+  width: 400px;
+  border: none;
+  border-bottom: 5px solid #457B9D;
+  margin: 0 auto;
+  outline: 0;
+  transition: background-color 1s;
+  &:focus {
+    background-color: darken(#F1FAEE, 5%);
+  }
+}
+
+#weather-card {
+  background-color: #A8DADC;
+  width: 400px;
+  height: 400px;
+  margin: 20px auto 0;
+}
