@@ -1,23 +1,28 @@
+$white      : #fff;
+$font-color : #1D3557;
+
 body {
   font-family: 'Alegreya Sans', sans-serif;
-  color: #1D3557;
+  color: $font-color;
 }
 
 #input-field {
   background-color: #F1FAEE;
-  color: #1D3557;
+  background-color: #457B9D;
+  color: $white;
   font-family: 'Alegreya Sans', sans-serif;
   font-size: 2.5em;
   text-align: center;
   display: block;
   width: 400px;
   border: none;
-  border-bottom: 5px solid #457B9D;
+  // border-bottom: 5px solid #457B9D;
   margin: 0 auto;
   outline: 0;
+  // cursor: pointer;
   transition: background-color 1s;
   &:focus {
-    background-color: darken(#F1FAEE, 5%);
+    background-color: darken(#457B9D, 15%);
   }
 }
 
@@ -26,4 +31,33 @@ body {
   width: 400px;
   height: 400px;
   margin: 20px auto 0;
+  cursor: pointer;
+  transition: background-color 1s;
+  &:hover {
+    background-color: darken(#A8DADC, 15%);
+  }
 }
+
+#weather-card-temperature {
+  font-size: 5em;
+  text-align: center;
+  line-height: 200px;
+  border-bottom: 5px solid transparentize($font-color, .7);
+  margin: 0 50px;
+}
+
+#weather-card-weather {
+  font-size: 4em;
+  text-align: center;
+  // line-height: 100px;
+  padding-top: 20px;
+  margin: 0 50px;
+}
+
+// #input-field::-moz-placeholder {
+//   color: green;
+// }
+//
+// #input-field:-moz-placeholder {
+//   color: green;
+// }

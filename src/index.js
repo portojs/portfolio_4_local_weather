@@ -18,6 +18,11 @@ class Main extends React.Component {
           document.getElementById('local-weather').innerHTML = data.weather[0].description;
           document.getElementById('temperature').innerHTML = data.main.temp;
           document.getElementById('location').innerHTML = data.name;
+
+          document.getElementById('input-field').value = data.name;
+          document.getElementById('weather-card-temperature').innerHTML = data.main.temp;
+          document.getElementById('weather-card-weather').innerHTML = data.weather[0].description;
+
         });
       };
 
@@ -39,8 +44,11 @@ class Main extends React.Component {
         <div>Temperature:</div>
         <div id="temperature"></div>
 
-        <input id="input-field" type="text" placeholder="Kharkiv"/>
-        <div id="weather-card"></div>
+        <input id="input-field" type="text" placeholder="Enter city here"/>
+        <div id="weather-card">
+          <div id="weather-card-temperature"></div>
+          <div id="weather-card-weather"></div>
+        </div>
       </div>
     )
   }
