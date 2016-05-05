@@ -14,8 +14,10 @@ body {
   font-size: 2.5em;
   text-align: center;
   display: block;
-  width: 400px;
+  width: 350px;
+  padding: .5em 0;
   border: none;
+  border-radius: 7px;
   // border-bottom: 5px solid #457B9D;
   margin: 0 auto;
   outline: 0;
@@ -28,8 +30,9 @@ body {
 
 #weather-card {
   background-color: #A8DADC;
-  width: 400px;
-  height: 400px;
+  width: 350px;
+  height: 350px;
+  border-radius: 7px;
   margin: 20px auto 0;
   cursor: pointer;
   transition: background-color 1s;
@@ -38,20 +41,29 @@ body {
   }
 }
 
-#weather-card-temperature {
-  font-size: 5em;
+#weather-card-weather {
+  font-size: 7em;
   text-align: center;
-  line-height: 200px;
-  border-bottom: 5px solid transparentize($font-color, .7);
-  margin: 0 50px;
+  line-height: 175px;
+  // border-bottom: 5px solid transparentize($font-color, .7);
+  // margin: 0 50px;
+  height: 175px;
+  width: 350px;
+  i {
+    padding-top: 50px;
+  }
 }
 
-#weather-card-weather {
-  font-size: 4em;
+#weather-card-temperature {
+  // display: table-cell;
+  // vertical-align: middle;
+  font-size: 7em;
   text-align: center;
-  // line-height: 100px;
-  padding-top: 20px;
-  margin: 0 50px;
+  line-height: 175px;
+  // padding-top: 50px;
+  // margin: 0 50px;
+  height: 175px;
+  width: 350px;
 }
 
 // #input-field::-moz-placeholder {
