@@ -9,39 +9,67 @@ class Main extends React.Component {
 
     window.onload = function() {
 
-      var tempUnit = '\u00B0C';
+      var tempUnit = '\u00B0C',
+          currentTemp = 0;
 
+      // check time of day at user location
+      function dayOrNight() {
+        var today = new Date(),
+            hour = today.getHours();
+
+        if(hour > 6 && hour < 20) {
+          // day time
+          return 'day-';
+        } else {
+          // night time
+          return 'night-';
+        }
+      }
+
+      // successfull geolocation
       function success(pos) {
         var link = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
                 pos.coords.latitude + '&lon=' + pos.coords.longitude +
-                '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb',
-            icons = ['01d', '02d', '03d', '04d', '09d', '10d', '11d', '13d', '50d'],
-            iconClasses = ['wi-owm-day-800', 'wi-owm-804', ''];
+                '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
 
+        // api call to check weather
         $.getJSON(link, function(data) {
-          console.log(data);
-          console.log(data.weather[0].id);
-          console.log(data.weather[0].icon);
+          var prefix = 'wi wi-owm-',
+              code = data.weather[0].id,
+              weatherClass = '';
 
-          document.getElementById('local-weather').innerHTML = data.weather[0].description;
-          document.getElementById('temperature').innerHTML = Math.floor(data.main.temp);
-          document.getElementById('location').innerHTML = data.name;
+          // $.getJSON('https://gist.githubusercontent.com/tbranyen/62d974681dea8ee0caa1/raw/3405bfb2a76b7cbd90fde33d8536f0cd13706955/icons.json', function(data) {
+          //   console.log(data[code]);
+          // })
 
+          currentTemp = Math.floor(data.main.temp);
+          weatherClass = prefix + dayOrNight() + code;
+          console.log(weatherClass);
           document.getElementById('input-field').value = data.name;
-          document.getElementById('weather-card-temperature').innerHTML = Math.floor(data.main.temp) + tempUnit;
-          // document.getElementById('weather-card-weather').innerHTML = data.weather[0].description;
-          // document.getElementByClass('wi').className = data.weather[0].icon;
+          document.getElementById('weather-card-temperature').innerHTML = currentTemp + tempUnit;
+          document.getElementById('weather-card-icon').className = weatherClass;
 
         });
       };
 
+      // failed geolocation
       function error(err) {
         document.getElementById('local-weather').innerHTML('Cannot get weather for your location. Try again later.');
       };
 
       $('#toggleTempUnit').on('click', function() {
-        tempUnit = tempUnit === '\u00B0C' ? '\u00B0F' : '\u00B0C'; 
+        if (tempUnit === '\u00B0C') {
+          tempUnit = '\u00B0F';
+          document.getElementById('weather-card-temperature').innerHTML = currentTemp + tempUnit;
+        } else {
+          tempUnit = '\u00B0C';
+          document.getElementById('weather-card-temperature').innerHTML = currentTemp + tempUnit;
+        }
       });
+
+      // $.getJSON('https://gist.githubusercontent.com/tbranyen/62d974681dea8ee0caa1/raw/3405bfb2a76b7cbd90fde33d8536f0cd13706955/icons.json', function(data) {
+      //   weather = data;
+      // })
 
       navigator.geolocation.getCurrentPosition(success, error);
 
@@ -50,20 +78,13 @@ class Main extends React.Component {
     return (
       <div>
 
-        <div>Location:</div>
-        <div id="location"></div>
-        <div>Local weather:</div>
-        <div id="local-weather"></div>
-        <div>Temperature:</div>
-        <div id="temperature"></div>
-
         <input id="input-field" type="text" placeholder="Enter city here"/>
         <div id="weather-card">
-          <div id="weather-card-weather"><i className="wi wi-owm-day-803"></i></div>
+          <div id="weather-card-weather"><i id="weather-card-icon"></i></div>
           <div id="weather-card-temperature"></div>
         </div>
 
-        <button id="toggleTempUnit"></button>
+        <button id="toggleTempUnit">Change Temperature Units</button>
 
       </div>
     )
