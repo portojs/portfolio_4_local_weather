@@ -9,8 +9,7 @@ class Main extends React.Component {
 
     window.onload = function() {
 
-      var tempUnit = '\u00B0C',
-          currentTemp = 0;
+      var currentTemp = 0;
 
       // check time of day at user location
       function dayOrNight() {
@@ -46,7 +45,7 @@ class Main extends React.Component {
           weatherClass = prefix + dayOrNight() + code;
           console.log(weatherClass);
           document.getElementById('input-field').value = data.name;
-          document.getElementById('weather-card-temperature').innerHTML = currentTemp + tempUnit;
+          document.getElementById('weather-card-temperature').innerHTML = currentTemp + '\u00B0C';
           document.getElementById('weather-card-icon').className = weatherClass;
 
         });
@@ -57,23 +56,34 @@ class Main extends React.Component {
         document.getElementById('local-weather').innerHTML('Cannot get weather for your location. Try again later.');
       };
 
-      // add onclick event to toggle Celcius-Fahrenheit
-      $('#toggleTempUnit').on('click', function() {
+      // toggle Celcius-Fahrenheit
+      $('#toggle-temp-unit').on('click', function() {
+        var displayedTemperature = document.getElementById('weather-card-temperature').innerHTML;
         $('#weather-card-temperature').animate({
           opacity: 0
         }, 500, function() {
-          if (tempUnit === '\u00B0C') {
-            tempUnit = '\u00B0F';
-            document.getElementById('weather-card-temperature').innerHTML = Math.floor((currentTemp * 9/5 + 32)) + tempUnit;
+          if (displayedTemperature[3] === 'C') {
+            // tempUnit = '\u00B0F';
+            document.getElementById('weather-card-temperature').innerHTML = Math.floor((currentTemp * 9/5 + 32)) + '\u00B0F';
           } else {
-            tempUnit = '\u00B0C';
-            document.getElementById('weather-card-temperature').innerHTML = currentTemp + tempUnit;
+            // tempUnit = '\u00B0C';
+            document.getElementById('weather-card-temperature').innerHTML = currentTemp + '\u00B0C';
           }
           $('#weather-card-temperature').animate({
             opacity: 1
           }, 500);
         });
       });
+
+      // document.getElementById('weather-card').addEventListener('mouseover', function(event) {
+      //   $(this).animate({
+      //     opacity: 0
+      //   }, 500);
+      // });
+
+      // $('#weather-card').on('mouseover', function() {
+      //   console.log('hovering');
+      // });
 
       // $.getJSON('https://gist.githubusercontent.com/tbranyen/62d974681dea8ee0caa1/raw/3405bfb2a76b7cbd90fde33d8536f0cd13706955/icons.json', function(data) {
       //   weather = data;
@@ -87,12 +97,22 @@ class Main extends React.Component {
       <div>
 
         <input id="input-field" type="text" placeholder="Enter city here"/>
-        <div id="weather-card">
-          <div id="weather-card-weather"><i id="weather-card-icon"></i></div>
-          <div id="weather-card-temperature"></div>
+
+        <div id="content">
+
+          <div id="weather-card">
+            <div className="weather-card-front-side">
+              <div id="weather-card-weather"><i id="weather-card-icon"></i></div>
+              <div id="weather-card-temperature"></div>
+            </div>
+            <div className="weather-card-back-side">
+            tomtom
+            </div>
+          </div>
+
         </div>
 
-        <button id="toggleTempUnit">Change Temperature Units</button>
+        <button id="toggle-temp-unit">Change Temperature Units</button>
 
       </div>
     );
