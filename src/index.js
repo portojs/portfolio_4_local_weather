@@ -59,13 +59,20 @@ class Main extends React.Component {
 
       // add onclick event to toggle Celcius-Fahrenheit
       $('#toggleTempUnit').on('click', function() {
-        if (tempUnit === '\u00B0C') {
-          tempUnit = '\u00B0F';
-          document.getElementById('weather-card-temperature').innerHTML = Math.floor((currentTemp * 9/5 + 32)) + tempUnit;
-        } else {
-          tempUnit = '\u00B0C';
-          document.getElementById('weather-card-temperature').innerHTML = currentTemp + tempUnit;
-        }
+        $('#weather-card-temperature').animate({
+          opacity: 0
+        }, 500, function() {
+          if (tempUnit === '\u00B0C') {
+            tempUnit = '\u00B0F';
+            document.getElementById('weather-card-temperature').innerHTML = Math.floor((currentTemp * 9/5 + 32)) + tempUnit;
+          } else {
+            tempUnit = '\u00B0C';
+            document.getElementById('weather-card-temperature').innerHTML = currentTemp + tempUnit;
+          }
+          $('#weather-card-temperature').animate({
+            opacity: 1
+          }, 500);
+        });
       });
 
       // $.getJSON('https://gist.githubusercontent.com/tbranyen/62d974681dea8ee0caa1/raw/3405bfb2a76b7cbd90fde33d8536f0cd13706955/icons.json', function(data) {
