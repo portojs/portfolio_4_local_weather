@@ -57,10 +57,11 @@ class Main extends React.Component {
         document.getElementById('local-weather').innerHTML('Cannot get weather for your location. Try again later.');
       };
 
+      // add onclick event to toggle Celcius-Fahrenheit
       $('#toggleTempUnit').on('click', function() {
         if (tempUnit === '\u00B0C') {
           tempUnit = '\u00B0F';
-          document.getElementById('weather-card-temperature').innerHTML = currentTemp + tempUnit;
+          document.getElementById('weather-card-temperature').innerHTML = Math.floor((currentTemp * 9/5 + 32)) + tempUnit;
         } else {
           tempUnit = '\u00B0C';
           document.getElementById('weather-card-temperature').innerHTML = currentTemp + tempUnit;
@@ -87,8 +88,9 @@ class Main extends React.Component {
         <button id="toggleTempUnit">Change Temperature Units</button>
 
       </div>
-    )
+    );
   }
+
 }
 
 ReactDOM.render(<Main />, document.getElementById('container'));
