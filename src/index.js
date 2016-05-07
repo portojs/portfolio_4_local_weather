@@ -9,7 +9,7 @@ class Main extends React.Component {
 
     window.onload = function() {
 
-      var currentTemp = 0;
+      var weatherTemp = 0;
 
       // check time of day at user location
       function dayOrNight() {
@@ -34,7 +34,10 @@ class Main extends React.Component {
         // api call to check weather
         $.getJSON(link, function(data) {
           var prefix = 'wi wi-owm-',
-              code = data.weather[0].id,
+              weatherCode = data.weather[0].id,
+              weatherHumidity = data.main.humidity,
+              weatherWindSpeed = data.wind.speed,
+              weatherWindDirection = data.wind.deg,
               weatherClass = '';
 
           // $.getJSON('https://gist.githubusercontent.com/tbranyen/62d974681dea8ee0caa1/raw/3405bfb2a76b7cbd90fde33d8536f0cd13706955/icons.json', function(data) {
@@ -42,34 +45,37 @@ class Main extends React.Component {
           // })
           console.log(data);
 
-          currentTemp = Math.round(data.main.temp);
-          weatherClass = prefix + dayOrNight() + code;
-          document.getElementById('input-field').value = data.name;
-          document.getElementById('weather-card-front-temperature').innerHTML = currentTemp + '\u00B0C';
-          document.getElementById('weather-card-front-icon').className = weatherClass;
+          weatherTemp = Math.round(data.main.temp);
+          weatherClass = prefix + dayOrNight() + weatherCode;
+          document.querySelector('#input-field').value = data.name;
+          document.querySelector('.weather-card-front-temperature').innerHTML = weatherTemp + '\u00B0C';
+          document.querySelector('.weather-card-front-icon').className = weatherClass;
+          document.querySelector('.weather-card-back-humidity-value').innerHTML = weatherHumidity + '%';
+          document.querySelector('.weather-card-back-wind-card-speed').innerHTML = Math.round(weatherWindSpeed) + ' m/s';
+          document.querySelector('.weather-card-back-wind-card-direction').innerHTML = Math.round(weatherWindDirection);
 
         });
       };
 
       // failed geolocation
       function error(err) {
-        document.getElementById('weather-card-front-temperature').innerHTML('Cannot get weather for your location. Try again later.');
+        document.querySelector('.weather-card-front-temperature').innerHTML('Cannot get weather for your location. Try again later.');
       };
 
       // toggle Celcius-Fahrenheit
       $('#toggle-temp-unit').on('click', function() {
-        var displayedTemperature = document.getElementById('weather-card-front-temperature').innerHTML;
-        $('#weather-card-front-temperature').animate({
+        var displayedTemperature = document.querySelector('.weather-card-front-temperature').innerHTML;
+        $('.weather-card-front-temperature').animate({
           opacity: 0
         }, 500, function() {
           if (displayedTemperature[3] === 'C') {
             // tempUnit = '\u00B0F';
-            document.getElementById('weather-card-front-temperature').innerHTML = Math.round((currentTemp * 9/5 + 32)) + '\u00B0F';
+            document.querySelector('.weather-card-front-temperature').innerHTML = Math.round((weatherTemp * 9/5 + 32)) + '\u00B0F';
           } else {
             // tempUnit = '\u00B0C';
-            document.getElementById('weather-card-front-temperature').innerHTML = currentTemp + '\u00B0C';
+            document.querySelector('.weather-card-front-temperature').innerHTML = weatherTemp + '\u00B0C';
           }
-          $('#weather-card-front-temperature').animate({
+          $('.weather-card-front-temperature').animate({
             opacity: 1
           }, 500);
         });
@@ -100,14 +106,31 @@ class Main extends React.Component {
 
         <div id="content">
 
-          <div id="weather-card">
-            <div id="weather-card-front">
-              <div id="weather-card-front-weather"><i id="weather-card-front-icon"></i></div>
-              <div id="weather-card-front-temperature"></div>
+          <div className="weather-card">
+            <div className="weather-card-front">
+              <div className="weather-card-front-weather"><i className="weather-card-front-icon"></i></div>
+              <div className="weather-card-front-temperature"></div>
             </div>
-            <div id="weather-card-back">
-              <div id="weather-card-back-humidity"></div>
-              <div id="weather-card-back-wind"></div>
+            <div className="weather-card-back">
+
+              <div className="weather-card-back-humidity">
+                <div>Humidity</div>
+                <div className="weather-card-back-humidity-value"></div>
+              </div>
+
+              <div className="weather-card-back-wind">
+
+                <div className="weather-card-back-wind-card">
+                  <div className="weather-card-back-wind-card-title">Wind direction</div>
+                  <div className="weather-card-back-wind-card-direction"></div>
+                </div>
+
+                <div className="weather-card-back-wind-card">
+                  <div className="weather-card-back-wind-card-title">Wind speed</div>
+                  <div className="weather-card-back-wind-card-speed"></div>
+                </div>
+
+              </div>
             </div>
           </div>
 

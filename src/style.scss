@@ -32,7 +32,7 @@ body {
   perspective: 700px;
 }
 
-#weather-card {
+.weather-card {
   // background-color: #A8DADC;
   position: relative;
   width: 350px;
@@ -86,11 +86,37 @@ body {
     transform: rotateY(180deg);
     &-humidity,
     &-wind {
-      font-size: 7em;
+      // font-size: 6em;
       text-align: center;
-      line-height: 175px;
+      // line-height: 175px;
       height: 175px;
       width: 350px;
+    }
+    &-humidity {
+      &:first-child {
+        font-size: 2em;
+        padding: 0.5em 0;
+      }
+      &-value {
+        font-size: 3em;
+        // line-height: 100px;
+        padding: 0.5rem 0;
+      }
+    }
+    &-wind {
+      &-card {
+        width: 48%;
+        float: left;
+        margin-left: 2%;
+        &-title {
+          font-size: 1.3em;
+        }
+        &-direction,
+        &-speed {
+          font-size: 3em;
+          padding-top: 0.4em;
+        }
+      }
     }
   }
 }
