@@ -40,36 +40,36 @@ class Main extends React.Component {
           // $.getJSON('https://gist.githubusercontent.com/tbranyen/62d974681dea8ee0caa1/raw/3405bfb2a76b7cbd90fde33d8536f0cd13706955/icons.json', function(data) {
           //   console.log(data[code]);
           // })
+          console.log(data);
 
-          currentTemp = Math.floor(data.main.temp);
+          currentTemp = Math.round(data.main.temp);
           weatherClass = prefix + dayOrNight() + code;
-          console.log(weatherClass);
           document.getElementById('input-field').value = data.name;
-          document.getElementById('weather-card-temperature').innerHTML = currentTemp + '\u00B0C';
-          document.getElementById('weather-card-icon').className = weatherClass;
+          document.getElementById('weather-card-front-temperature').innerHTML = currentTemp + '\u00B0C';
+          document.getElementById('weather-card-front-icon').className = weatherClass;
 
         });
       };
 
       // failed geolocation
       function error(err) {
-        document.getElementById('local-weather').innerHTML('Cannot get weather for your location. Try again later.');
+        document.getElementById('weather-card-front-temperature').innerHTML('Cannot get weather for your location. Try again later.');
       };
 
       // toggle Celcius-Fahrenheit
       $('#toggle-temp-unit').on('click', function() {
-        var displayedTemperature = document.getElementById('weather-card-temperature').innerHTML;
-        $('#weather-card-temperature').animate({
+        var displayedTemperature = document.getElementById('weather-card-front-temperature').innerHTML;
+        $('#weather-card-front-temperature').animate({
           opacity: 0
         }, 500, function() {
           if (displayedTemperature[3] === 'C') {
             // tempUnit = '\u00B0F';
-            document.getElementById('weather-card-temperature').innerHTML = Math.floor((currentTemp * 9/5 + 32)) + '\u00B0F';
+            document.getElementById('weather-card-front-temperature').innerHTML = Math.round((currentTemp * 9/5 + 32)) + '\u00B0F';
           } else {
             // tempUnit = '\u00B0C';
-            document.getElementById('weather-card-temperature').innerHTML = currentTemp + '\u00B0C';
+            document.getElementById('weather-card-front-temperature').innerHTML = currentTemp + '\u00B0C';
           }
-          $('#weather-card-temperature').animate({
+          $('#weather-card-front-temperature').animate({
             opacity: 1
           }, 500);
         });
@@ -101,12 +101,13 @@ class Main extends React.Component {
         <div id="content">
 
           <div id="weather-card">
-            <div className="weather-card-front-side">
-              <div id="weather-card-weather"><i id="weather-card-icon"></i></div>
-              <div id="weather-card-temperature"></div>
+            <div id="weather-card-front">
+              <div id="weather-card-front-weather"><i id="weather-card-front-icon"></i></div>
+              <div id="weather-card-front-temperature"></div>
             </div>
-            <div className="weather-card-back-side">
-            tomtom
+            <div id="weather-card-back">
+              <div id="weather-card-back-humidity"></div>
+              <div id="weather-card-back-wind"></div>
             </div>
           </div>
 

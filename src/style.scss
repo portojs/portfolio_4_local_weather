@@ -46,56 +46,51 @@ body {
     background-color: darken(#A8DADC, 15%);
     transform: rotateY(180deg);
   }
-}
-
-.weather-card-front-side,
-.weather-card-back-side {
-  backface-visibility: hidden;
-}
-
-.weather-card-front-side {
-  background-color: #A8DADC;
-  position: relative;
-  border-radius: 7px;
-  z-index: 100;
-}
-
-#weather-card-weather {
-  font-size: 7em;
-  text-align: center;
-  line-height: 175px;
-  // border-bottom: 5px solid transparentize($font-color, .7);
-  // margin: 0 50px;
-  height: 175px;
-  width: 350px;
-  i {
-    padding-top: 50px;
+  &-front,
+  &-back {
+    backface-visibility: hidden;
   }
-}
-
-#weather-card-temperature {
-  font-size: 7em;
-  text-align: center;
-  line-height: 175px;
-  height: 175px;
-  width: 350px;
-}
-
-.weather-card-back-side {
-  background-color: #A8DADC;
-  width: 350px;
-  height: 350px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  // padding-left: 20px;
-  // padding-right: 20px;
-  border-radius: 7px;
-  display: flex; /* for centering text */
-  flex-direction: column;
-  justify-content: center;
-  line-height: 0;
-  transform: rotateY(180deg);
+  &-front {
+    background-color: #A8DADC;
+    position: relative;
+    border-radius: 7px;
+    z-index: 100;
+    &-weather,
+    &-temperature {
+      font-size: 7em;
+      text-align: center;
+      line-height: 175px;
+      height: 175px;
+      width: 350px;
+    }
+    &-weather i {
+      padding-top: 50px;
+    }
+  }
+  &-back {
+    background-color: #A8DADC;
+    // width: 350px;
+    // height: 350px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    // padding-left: 20px;
+    // padding-right: 20px;
+    border-radius: 7px;
+    // display: flex; /* for centering text */
+    // flex-direction: column;
+    // justify-content: center;
+    // line-height: 0;
+    transform: rotateY(180deg);
+    &-humidity,
+    &-wind {
+      font-size: 7em;
+      text-align: center;
+      line-height: 175px;
+      height: 175px;
+      width: 350px;
+    }
+  }
 }
