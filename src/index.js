@@ -52,7 +52,7 @@ class Main extends React.Component {
           document.querySelector('.weather-card-front-icon').className = weatherClass;
           document.querySelector('.weather-card-back-humidity-value').innerHTML = weatherHumidity + '%';
           document.querySelector('.weather-card-back-wind-card-speed').innerHTML = Math.round(weatherWindSpeed) + ' m/s';
-          document.querySelector('.weather-card-back-wind-card-direction').innerHTML = Math.round(weatherWindDirection);
+          document.querySelector('.wi-wind').classList.add('towards-' + Math.round(weatherWindDirection) + '-deg');
 
         });
       };
@@ -108,7 +108,9 @@ class Main extends React.Component {
 
           <div className="weather-card">
             <div className="weather-card-front">
-              <div className="weather-card-front-weather"><i className="weather-card-front-icon"></i></div>
+              <div className="weather-card-front-weather">
+                <i className="weather-card-front-icon"></i>
+              </div>
               <div className="weather-card-front-temperature"></div>
             </div>
             <div className="weather-card-back">
@@ -122,7 +124,9 @@ class Main extends React.Component {
 
                 <div className="weather-card-back-wind-card">
                   <div className="weather-card-back-wind-card-title">Wind direction</div>
-                  <div className="weather-card-back-wind-card-direction"></div>
+                  <div className="weather-card-back-wind-card-direction">
+                    <i className="wi wi-wind"></i>
+                  </div>
                 </div>
 
                 <div className="weather-card-back-wind-card">

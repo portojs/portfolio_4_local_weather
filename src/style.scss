@@ -113,8 +113,14 @@ body {
         }
         &-direction,
         &-speed {
-          font-size: 3em;
-          padding-top: 0.4em;
+        }
+        &-direction {
+          font-size: 5em;
+          padding-top: 0.1em;
+        }
+        &-speed {
+          font-size: 3.5em;
+          padding-top: 0.33em;
         }
       }
     }
