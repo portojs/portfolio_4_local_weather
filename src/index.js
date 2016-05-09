@@ -80,37 +80,37 @@ class Main extends React.Component {
       });
 
       function runAnimation() {
-        while (enterFlag) {
+        if (enterFlag) {
           console.log('starting...');
           $('.weather-card').animate({
             opacity: 0.5
           }, 500, function() {
             $('.weather-card').animate({
-              opacity: 1
-            }, 500);
+              opacity: 1}, 500, function() {
+                runAnimation();
+              });
           });
+        } else {
+          console.log('finishing...');
+          $('.weather-card').animate({
+            opacity: 1
+          }, 500);
         }
       }
 
       document.querySelector('.weather-card').addEventListener('mouseenter', function() {
         enterFlag = true;
-        // runAnimation();
+        runAnimation();
       });
 
       document.querySelector('.weather-card').addEventListener('mouseleave', function() {
         enterFlag = false;
+        runAnimation();
       });
 
       document.querySelector('.weather-card').addEventListener('click', function() {
         document.querySelector('.weather-card').classList.toggle('flip-over');
       });
-      // $('#weather-card').on('mouseover', function() {
-      //   console.log('hovering');
-      // });
-
-      // $.getJSON('https://gist.githubusercontent.com/tbranyen/62d974681dea8ee0caa1/raw/3405bfb2a76b7cbd90fde33d8536f0cd13706955/icons.json', function(data) {
-      //   weather = data;
-      // })
 
       navigator.geolocation.getCurrentPosition(success, error);
 
