@@ -83,29 +83,49 @@ class Main extends React.Component {
         if (enterFlag) {
           console.log('starting...');
           $('.weather-card').animate({
-            opacity: 0.5
+            transform: 'scale(2)'
           }, 500, function() {
             $('.weather-card').animate({
-              opacity: 1}, 500, function() {
+              transform: 'scale(1)'
+            }, 500, function() {
                 runAnimation();
               });
           });
-        } else {
-          console.log('finishing...');
-          $('.weather-card').animate({
-            opacity: 1
-          }, 500);
         }
       }
 
+      function runAnimation2() {
+        if (enterFlag) {
+          console.log('running...');
+        //   window.setTimeout()
+          document.querySelector('.weather-card').classList.add('tremble');
+          window.setTimeout(function() {
+            document.querySelector('.weather-card').classList.remove('tremble');
+            document.querySelector('.weather-card').classList.add('tremble2');
+            window.setTimeout(function() {
+              document.querySelector('.weather-card').classList.remove('tremble2');
+              runAnimation2();
+            }, 1000);
+          }, 1000);
+        //   runAnimation2();
+        } else {
+          console.log('stopping...');
+          document.querySelector('.weather-card').classList.remove('tremble');
+          document.querySelector('.weather-card').classList.remove('tremble2');
+
+        }
+      }
+
+
       document.querySelector('.weather-card').addEventListener('mouseenter', function() {
         enterFlag = true;
-        runAnimation();
+        console.log('starting...');
+        runAnimation2();
       });
 
       document.querySelector('.weather-card').addEventListener('mouseleave', function() {
         enterFlag = false;
-        runAnimation();
+        runAnimation2();
       });
 
       document.querySelector('.weather-card').addEventListener('click', function() {

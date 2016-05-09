@@ -123,7 +123,15 @@ body {
   transform: rotateY(180deg);
 }
 
-// .weather-card:hover {
+.tremble {
+  transform: rotateY(-7deg);
+}
+
+.tremble2 {
+  transform: rotateY(7deg);
+}
+
+// .tremble {
 //   -webkit-animation-name: rotate;
 //   -webkit-animation-duration: 2s;
 //   -webkit-animation-iteration-count: infinite;
@@ -137,27 +145,27 @@ body {
 //   animation-iteration-count: infinite;
 //   animation-timing-function: linear;
 // }
+//
+@-webkit-keyframes rotate {
+    0% {-webkit-transform: rotateY(0deg);}
+    25% {-webkit-transform: rotateY(-7deg);}
+    50% {-webkit-transform: rotateY(0deg);}
+    75% {-webkit-transform: rotateY(7deg);}
+    100% {-webkit-transform: rotateY(0deg);}
+}
 
-// @-webkit-keyframes rotate {
-//     0% {-webkit-transform: rotateY(0deg);}
-//     25% {-webkit-transform: rotateY(-7deg);}
-//     50% {-webkit-transform: rotateY(0deg);}
-//     75% {-webkit-transform: rotateY(7deg);}
-//     100% {-webkit-transform: rotateY(0deg);}
-// }
-//
-// @-moz-keyframes rotate {
-//   0% {-webkit-transform: rotateY(0deg);}
-//   25% {-webkit-transform: rotateY(-7deg);}
-//   50% {-webkit-transform: rotateY(0deg);}
-//   75% {-webkit-transform: rotateY(7deg);}
-//   100% {-webkit-transform: rotateY(0deg);}
-// }
-//
-// @keyframes rotate {
-//   0% {-webkit-transform: rotateY(0deg);}
-//   25% {-webkit-transform: rotateY(-7deg);}
-//   50% {-webkit-transform: rotateY(0deg);}
-//   75% {-webkit-transform: rotateY(7deg);}
-//   100% {-webkit-transform: rotateY(0deg);}
-// }
+@-moz-keyframes rotate {
+  0% {-webkit-transform: rotateY(0deg);}
+  25% {-webkit-transform: rotateY(-7deg);}
+  50% {-webkit-transform: rotateY(0deg);}
+  75% {-webkit-transform: rotateY(7deg);}
+  100% {-webkit-transform: rotateY(0deg);}
+}
+
+@keyframes rotate {
+  0% {-webkit-transform: rotateY(0deg);}
+  25% {-webkit-transform: rotateY(-7deg);}
+  50% {-webkit-transform: rotateY(0deg);}
+  75% {-webkit-transform: rotateY(7deg);}
+  100% {-webkit-transform: rotateY(0deg);}
+}
