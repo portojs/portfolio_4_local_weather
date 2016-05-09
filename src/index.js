@@ -9,7 +9,8 @@ class Main extends React.Component {
 
     window.onload = function() {
 
-      var weatherTemp = 0;
+      var weatherTemp = 0,
+          enterFlag;
 
       // check time of day at user location
       function dayOrNight() {
@@ -40,9 +41,6 @@ class Main extends React.Component {
               weatherWindDirection = data.wind.deg,
               weatherClass = '';
 
-          // $.getJSON('https://gist.githubusercontent.com/tbranyen/62d974681dea8ee0caa1/raw/3405bfb2a76b7cbd90fde33d8536f0cd13706955/icons.json', function(data) {
-          //   console.log(data[code]);
-          // })
           console.log(data);
 
           weatherTemp = Math.round(data.main.temp);
@@ -63,7 +61,7 @@ class Main extends React.Component {
       };
 
       // toggle Celcius-Fahrenheit
-      $('#toggle-temp-unit').on('click', function() {
+      document.querySelector('#toggle-temp-unit').addEventListener('click', function() {
         var displayedTemperature = document.querySelector('.weather-card-front-temperature').innerHTML;
         $('.weather-card-front-temperature').animate({
           opacity: 0
@@ -81,12 +79,31 @@ class Main extends React.Component {
         });
       });
 
-      // document.getElementById('weather-card').addEventListener('mouseover', function(event) {
-      //   $(this).animate({
-      //     opacity: 0
-      //   }, 500);
-      // });
+      function runAnimation() {
+        while (enterFlag) {
+          console.log('starting...');
+          $('.weather-card').animate({
+            opacity: 0.5
+          }, 500, function() {
+            $('.weather-card').animate({
+              opacity: 1
+            }, 500);
+          });
+        }
+      }
 
+      document.querySelector('.weather-card').addEventListener('mouseenter', function() {
+        enterFlag = true;
+        // runAnimation();
+      });
+
+      document.querySelector('.weather-card').addEventListener('mouseleave', function() {
+        enterFlag = false;
+      });
+
+      document.querySelector('.weather-card').addEventListener('click', function() {
+        document.querySelector('.weather-card').classList.toggle('flip-over');
+      });
       // $('#weather-card').on('mouseover', function() {
       //   console.log('hovering');
       // });
