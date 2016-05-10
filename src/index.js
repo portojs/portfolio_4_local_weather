@@ -89,8 +89,11 @@ class Main extends React.Component {
     return (
       <div>
 
-        <input id="input-field" type="text" placeholder="Enter city here" />
-        <i className="fa fa-search fa-flip-horizontal"></i>
+
+        <div id="input">
+          <input id="input-field" type="text" placeholder="Enter city here"></input>
+          <button id="input-button"><i className="fa fa-search fa-flip-horizontal"></i></button>
+        </div>
 
         <div id="content">
 
