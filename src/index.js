@@ -76,65 +76,12 @@ class Main extends React.Component {
         });
       });
 
-      // function runAnimation() {
-      //   if (enterFlag) {
-      //     console.log('starting...');
-      //     $('.weather-card').animate({
-      //       transform: 'scale(2)'
-      //     }, 500, function() {
-      //       $('.weather-card').animate({
-      //         transform: 'scale(1)'
-      //       }, 500, function() {
-      //           runAnimation();
-      //         });
-      //     });
-      //   }
-      // }
-
-      // function runAnimation2() {
-      //   if (enterFlag) {
-      //     console.log('running...');
-      //   //   window.setTimeout()
-      //     document.querySelector('.weather-card').classList.add('tremble');
-      //     window.setTimeout(function() {
-      //       document.querySelector('.weather-card').classList.remove('tremble');
-      //       document.querySelector('.weather-card').classList.add('tremble2');
-      //       window.setTimeout(function() {
-      //         document.querySelector('.weather-card').classList.remove('tremble2');
-      //         runAnimation2();
-      //       }, 1000);
-      //     }, 1000);
-      //   //   runAnimation2();
-      //   } else {
-      //     console.log('stopping...');
-      //     document.querySelector('.weather-card').classList.remove('tremble');
-      //     document.querySelector('.weather-card').classList.remove('tremble2');
-      //
-      //   }
-      // }
-
-
-      // document.querySelector('.weather-card').addEventListener('mouseenter', function() {
-      //   enterFlag = true;
-      //   console.log('starting...');
-      //   runAnimation2();
-      //   $('.weather-card').css({
-      //     'animation-play-state': 'running'
-      //   });
-      // });
-      //
-      // document.querySelector('.weather-card').addEventListener('mouseleave', function() {
-      //   enterFlag = false;
-      //   runAnimation2();
-      //   $('.weather-card').css({
-      //     'animation-play-state': 'paused'
-      //   });
-      // });
-
+      // onclick event to show the back side of the weather card
       document.querySelector('.weather-card').addEventListener('click', function() {
         document.querySelector('.weather-card').classList.toggle('flip-over');
       });
 
+      // get user's current position
       navigator.geolocation.getCurrentPosition(success, error);
 
     };
@@ -142,7 +89,8 @@ class Main extends React.Component {
     return (
       <div>
 
-        <input id="input-field" type="text" placeholder="Enter city here"/>
+        <input id="input-field" type="text" placeholder="Enter city here" />
+        <i className="fa fa-search fa-flip-horizontal"></i>
 
         <div id="content">
 
