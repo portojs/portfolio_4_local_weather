@@ -9,8 +9,7 @@ class Main extends React.Component {
 
     window.onload = function() {
 
-      var weatherTemp = 0,
-          enterFlag;
+      var weatherTemp = 0;
 
       // check time of day at user location
       function dayOrNight() {
@@ -67,10 +66,8 @@ class Main extends React.Component {
           opacity: 0
         }, 500, function() {
           if (displayedTemperature[3] === 'C') {
-            // tempUnit = '\u00B0F';
             document.querySelector('.weather-card-front-temperature').innerHTML = Math.round((weatherTemp * 9/5 + 32)) + '\u00B0F';
           } else {
-            // tempUnit = '\u00B0C';
             document.querySelector('.weather-card-front-temperature').innerHTML = weatherTemp + '\u00B0C';
           }
           $('.weather-card-front-temperature').animate({
@@ -79,54 +76,60 @@ class Main extends React.Component {
         });
       });
 
-      function runAnimation() {
-        if (enterFlag) {
-          console.log('starting...');
-          $('.weather-card').animate({
-            transform: 'scale(2)'
-          }, 500, function() {
-            $('.weather-card').animate({
-              transform: 'scale(1)'
-            }, 500, function() {
-                runAnimation();
-              });
-          });
-        }
-      }
+      // function runAnimation() {
+      //   if (enterFlag) {
+      //     console.log('starting...');
+      //     $('.weather-card').animate({
+      //       transform: 'scale(2)'
+      //     }, 500, function() {
+      //       $('.weather-card').animate({
+      //         transform: 'scale(1)'
+      //       }, 500, function() {
+      //           runAnimation();
+      //         });
+      //     });
+      //   }
+      // }
 
-      function runAnimation2() {
-        if (enterFlag) {
-          console.log('running...');
-        //   window.setTimeout()
-          document.querySelector('.weather-card').classList.add('tremble');
-          window.setTimeout(function() {
-            document.querySelector('.weather-card').classList.remove('tremble');
-            document.querySelector('.weather-card').classList.add('tremble2');
-            window.setTimeout(function() {
-              document.querySelector('.weather-card').classList.remove('tremble2');
-              runAnimation2();
-            }, 1000);
-          }, 1000);
-        //   runAnimation2();
-        } else {
-          console.log('stopping...');
-          document.querySelector('.weather-card').classList.remove('tremble');
-          document.querySelector('.weather-card').classList.remove('tremble2');
+      // function runAnimation2() {
+      //   if (enterFlag) {
+      //     console.log('running...');
+      //   //   window.setTimeout()
+      //     document.querySelector('.weather-card').classList.add('tremble');
+      //     window.setTimeout(function() {
+      //       document.querySelector('.weather-card').classList.remove('tremble');
+      //       document.querySelector('.weather-card').classList.add('tremble2');
+      //       window.setTimeout(function() {
+      //         document.querySelector('.weather-card').classList.remove('tremble2');
+      //         runAnimation2();
+      //       }, 1000);
+      //     }, 1000);
+      //   //   runAnimation2();
+      //   } else {
+      //     console.log('stopping...');
+      //     document.querySelector('.weather-card').classList.remove('tremble');
+      //     document.querySelector('.weather-card').classList.remove('tremble2');
+      //
+      //   }
+      // }
 
-        }
-      }
 
-
-      document.querySelector('.weather-card').addEventListener('mouseenter', function() {
-        enterFlag = true;
-        console.log('starting...');
-        runAnimation2();
-      });
-
-      document.querySelector('.weather-card').addEventListener('mouseleave', function() {
-        enterFlag = false;
-        runAnimation2();
-      });
+      // document.querySelector('.weather-card').addEventListener('mouseenter', function() {
+      //   enterFlag = true;
+      //   console.log('starting...');
+      //   runAnimation2();
+      //   $('.weather-card').css({
+      //     'animation-play-state': 'running'
+      //   });
+      // });
+      //
+      // document.querySelector('.weather-card').addEventListener('mouseleave', function() {
+      //   enterFlag = false;
+      //   runAnimation2();
+      //   $('.weather-card').css({
+      //     'animation-play-state': 'paused'
+      //   });
+      // });
 
       document.querySelector('.weather-card').addEventListener('click', function() {
         document.querySelector('.weather-card').classList.toggle('flip-over');

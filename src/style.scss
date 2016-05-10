@@ -1,16 +1,19 @@
 $white      : #fff;
 $font-color : #1D3557;
+$input-color: #457B9D;
+$card-color : #A8DADC;
+
+$stack-sans-serif: 'Alegreya Sans', sans-serif;
 
 body {
-  font-family: 'Alegreya Sans', sans-serif;
+  font-family: $stack-sans-serif;
   color: $font-color;
 }
 
 #input-field {
-  background-color: #F1FAEE;
-  background-color: #457B9D;
+  background-color: $input-color;
   color: $white;
-  font-family: 'Alegreya Sans', sans-serif;
+  font-family: $stack-sans-serif;
   font-size: 2.5em;
   text-align: center;
   display: block;
@@ -18,13 +21,11 @@ body {
   padding: .5em 0;
   border: none;
   border-radius: 7px;
-  // border-bottom: 5px solid #457B9D;
   margin: 0 auto;
   outline: 0;
-  // cursor: pointer;
-  transition: background-color 1s;
+  transition: background-color 1s ease-out;
   &:focus {
-    background-color: darken(#457B9D, 15%);
+    background-color: darken($input-color, 15%);
   }
 }
 
@@ -33,27 +34,29 @@ body {
 }
 
 .weather-card {
-  // background-color: #A8DADC;
-  position: relative;
+  // position: relative;
   width: 350px;
   height: 350px;
   border-radius: 7px;
   margin: 20px auto 0;
   cursor: pointer;
-  -webkit-transition: -webkit-transform .5s linear;
-  -moz-transition: -moz-transform .5s linear;
-  transition: transform .5s linear;
+  -webkit-transition: -webkit-transform .5s ease-in-out;
+  -moz-transition: -moz-transform .5s ease-in-out;
+  transition: transform .5s ease-in-out;
   transform-style: preserve-3d;
-  &:hover {
-    // background-color: darken(#A8DADC, 15%);
-    // transform: rotateY(180deg);
+  &:hover &-front,
+  &:hover &-back {
+    background: darken($card-color, 15%);
   }
   &-front,
   &-back {
     backface-visibility: hidden;
+    -webkit-transition: background-color .5s ease-in-out;
+    -moz-transition: background-color .5s ease-in-out;
+    transition: background-color .5s ease-in-out;
   }
   &-front {
-    background-color: #A8DADC;
+    background-color: $card-color;
     position: relative;
     border-radius: 7px;
     z-index: 100;
@@ -70,7 +73,7 @@ body {
     }
   }
   &-back {
-    background-color: #A8DADC;
+    background-color: $card-color;
     position: absolute;
     top: 0;
     right: 0;
@@ -102,9 +105,6 @@ body {
         &-title {
           font-size: 1.3em;
         }
-        &-direction,
-        &-speed {
-        }
         &-direction {
           font-size: 5em;
           padding-top: 0.1em;
@@ -119,53 +119,5 @@ body {
 }
 
 .flip-over {
-  background-color: darken(#A8DADC, 15%);
   transform: rotateY(180deg);
-}
-
-.tremble {
-  transform: rotateY(-7deg);
-}
-
-.tremble2 {
-  transform: rotateY(7deg);
-}
-
-// .tremble {
-//   -webkit-animation-name: rotate;
-//   -webkit-animation-duration: 2s;
-//   -webkit-animation-iteration-count: infinite;
-//   -webkit-animation-timing-function: linear;
-//   -moz-animation-name: rotate;
-//   -moz-animation-duration: 2s;
-//   -moz-animation-iteration-count: infinite;
-//   -moz-animation-timing-function: linear;
-//   animation-name: rotate;
-//   animation-duration: 2s;
-//   animation-iteration-count: infinite;
-//   animation-timing-function: linear;
-// }
-//
-@-webkit-keyframes rotate {
-    0% {-webkit-transform: rotateY(0deg);}
-    25% {-webkit-transform: rotateY(-7deg);}
-    50% {-webkit-transform: rotateY(0deg);}
-    75% {-webkit-transform: rotateY(7deg);}
-    100% {-webkit-transform: rotateY(0deg);}
-}
-
-@-moz-keyframes rotate {
-  0% {-webkit-transform: rotateY(0deg);}
-  25% {-webkit-transform: rotateY(-7deg);}
-  50% {-webkit-transform: rotateY(0deg);}
-  75% {-webkit-transform: rotateY(7deg);}
-  100% {-webkit-transform: rotateY(0deg);}
-}
-
-@keyframes rotate {
-  0% {-webkit-transform: rotateY(0deg);}
-  25% {-webkit-transform: rotateY(-7deg);}
-  50% {-webkit-transform: rotateY(0deg);}
-  75% {-webkit-transform: rotateY(7deg);}
-  100% {-webkit-transform: rotateY(0deg);}
 }
