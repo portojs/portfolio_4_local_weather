@@ -9,16 +9,18 @@ class Main extends React.Component {
     super(props);
     this.state = {
       searchItem: ''
+      // weatherTemp: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    // this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   componentDidMount() {
     var weatherTemp = 0;
 
     // check time of day at user location
-    function dayOrNight() {
+    const dayOrNight = () => {
       var today = new Date(),
           hour = today.getHours();
       if(hour > 6 && hour < 20) {
@@ -53,12 +55,12 @@ class Main extends React.Component {
         document.querySelector('.weather-card-back-wind-card-speed').innerHTML = Math.round(weatherWindSpeed) + ' m/s';
         document.querySelector('.wi-wind').classList.add('towards-' + Math.round(weatherWindDirection) + '-deg');
       });
-    };
+    }
 
     // failed geolocation
     function error(err) {
       document.querySelector('.weather-card-front-temperature').innerHTML('Cannot get weather for your location. Try again later.');
-    };
+    }
 
     // get user's current position
     navigator.geolocation.getCurrentPosition(success, error);
