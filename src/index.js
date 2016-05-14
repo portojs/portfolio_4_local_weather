@@ -8,62 +8,51 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchItem: ''
-      // weatherTemp: 0
+      searchItem: '',
+      weatherTemp: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    // this.componentDidMount = this.componentDidMount.bind(this);
+    this.changeTempUnits = this.changeTempUnits.bind(this);
   }
 
-  componentDidMount() {
-    var weatherTemp = 0;
+  componentWillMount() {
+    // get current position
+    navigator.geolocation.getCurrentPosition(pos => {
+      this.getWeather(pos);
+    }, () => console.log('error'));
+  }
 
-    // check time of day at user location
-    const dayOrNight = () => {
-      var today = new Date(),
-          hour = today.getHours();
-      if(hour > 6 && hour < 20) {
-        // day time
-        return 'day-';
-      } else {
-        // night time
-        return 'night-';
-      }
+  getWeather(pos) {
+    $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' +
+      pos.coords.latitude + '&lon=' + pos.coords.longitude +
+      '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb', (data) => {
+      let prefix = 'wi wi-owm-',
+          weatherCode = data.weather[0].id,
+          weatherHumidity = data.main.humidity,
+          weatherWindSpeed = data.wind.speed,
+          weatherWindDirection = data.wind.deg,
+          weatherClass = '';
+      this.setState({weatherTemp: Math.round(data.main.temp)});
+      weatherClass = prefix + this.dayOrNight() + weatherCode;
+      document.querySelector('#input-field').value = data.name;
+      document.querySelector('.weather-card-front-temperature').innerHTML = this.state.weatherTemp + '\u00B0C';
+      document.querySelector('.weather-card-front-icon').className = weatherClass;
+      document.querySelector('.weather-card-back-humidity-value').innerHTML = weatherHumidity + '%';
+      document.querySelector('.weather-card-back-wind-card-speed').innerHTML = Math.round(weatherWindSpeed) + ' m/s';
+      document.querySelector('.wi-wind').classList.add('towards-' + Math.round(weatherWindDirection) + '-deg');
+    });
+  }
+
+  // check time of day at given location
+  dayOrNight() {
+    var today = new Date(),
+        hour = today.getHours();
+    if(hour > 6 && hour < 20) {
+      return 'day-';
+    } else {
+      return 'night-';
     }
-
-    // successfull geolocation
-    function success(pos) {
-      var link = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
-              pos.coords.latitude + '&lon=' + pos.coords.longitude +
-              '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
-      // api call to check weather
-      $.getJSON(link, function(data) {
-        var prefix = 'wi wi-owm-',
-            weatherCode = data.weather[0].id,
-            weatherHumidity = data.main.humidity,
-            weatherWindSpeed = data.wind.speed,
-            weatherWindDirection = data.wind.deg,
-            weatherClass = '';
-        console.log(data);
-        weatherTemp = Math.round(data.main.temp);
-        weatherClass = prefix + dayOrNight() + weatherCode;
-        document.querySelector('#input-field').value = data.name;
-        document.querySelector('.weather-card-front-temperature').innerHTML = weatherTemp + '\u00B0C';
-        document.querySelector('.weather-card-front-icon').className = weatherClass;
-        document.querySelector('.weather-card-back-humidity-value').innerHTML = weatherHumidity + '%';
-        document.querySelector('.weather-card-back-wind-card-speed').innerHTML = Math.round(weatherWindSpeed) + ' m/s';
-        document.querySelector('.wi-wind').classList.add('towards-' + Math.round(weatherWindDirection) + '-deg');
-      });
-    }
-
-    // failed geolocation
-    function error(err) {
-      document.querySelector('.weather-card-front-temperature').innerHTML('Cannot get weather for your location. Try again later.');
-    }
-
-    // get user's current position
-    navigator.geolocation.getCurrentPosition(success, error);
   }
 
   handleSubmit(event) {
@@ -76,27 +65,26 @@ class Main extends React.Component {
     this.setState({searchItem: event.target.value});
   }
 
+  changeTempUnits(event) {
+    event.preventDefault();
+    let displayedTemperature = document.querySelector('.weather-card-front-temperature').innerHTML;
+    $('.weather-card-front-temperature').animate({
+      opacity: 0
+    }, 500, () => {
+      if (displayedTemperature[3] === 'C') {
+        document.querySelector('.weather-card-front-temperature').innerHTML = Math.round((this.state.weatherTemp * 9/5 + 32)) + '\u00B0F';
+      } else {
+        document.querySelector('.weather-card-front-temperature').innerHTML = this.state.weatherTemp + '\u00B0C';
+      }
+      $('.weather-card-front-temperature').animate({
+        opacity: 1
+      }, 500);
+    });
+  }
+
   render() {
 
     window.onload = function() {
-
-      // toggle Celcius-Fahrenheit
-      document.querySelector('#toggle-temp-unit').addEventListener('click', function() {
-        var displayedTemperature = document.querySelector('.weather-card-front-temperature').innerHTML;
-        $('.weather-card-front-temperature').animate({
-          opacity: 0
-        }, 500, function() {
-          if (displayedTemperature[3] === 'C') {
-            document.querySelector('.weather-card-front-temperature').innerHTML = Math.round((weatherTemp * 9/5 + 32)) + '\u00B0F';
-          } else {
-            document.querySelector('.weather-card-front-temperature').innerHTML = weatherTemp + '\u00B0C';
-          }
-          $('.weather-card-front-temperature').animate({
-            opacity: 1
-          }, 500);
-        });
-      });
-
       // onclick event to show the back side of the weather card
       document.querySelector('.weather-card').addEventListener('click', function() {
         document.querySelector('.weather-card').classList.toggle('flip-over');
@@ -148,7 +136,7 @@ class Main extends React.Component {
 
         </div>
 
-        <button id="toggle-temp-unit">Change Temperature Units</button>
+        <button id="toggle-temp-unit" onClick={this.changeTempUnits}>Change Temperature Units</button>
 
       </div>
     );
