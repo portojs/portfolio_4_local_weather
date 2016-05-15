@@ -31,10 +31,18 @@ class Main extends React.Component {
 
   }
 
-  getWeather(pos) {
-    let link = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
-      pos.coords.latitude + '&lon=' + pos.coords.longitude +
-      '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
+  getWeather(pos, cityName) {
+    let link = '';
+
+    if (!cityName) {
+      link = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
+        pos.coords.latitude + '&lon=' + pos.coords.longitude +
+        '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
+    } else {
+      link = 'http://api.openweathermap.org/data/2.5/weather?q=' +
+        cityName +
+        '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
+    }
 
     fetch(link)
       .then(response => response.json()
@@ -42,7 +50,7 @@ class Main extends React.Component {
         this.setState({
           searchItem: data.name,
           weatherIcon: ('wi wi-owm-' + this.dayOrNight() + data.weather[0].id),
-          weatherHumidity: data.main.humidity + '\u00B0C',
+          weatherHumidity: data.main.humidity + '%',
           weatherTemp: data.main.temp,
           weatherTempChange: Math.round(data.main.temp) + '\u00B0C',
           weatherWindSpeed: Math.round(data.wind.speed) + ' m/s',
@@ -64,8 +72,7 @@ class Main extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(event);
-    console.log('Target value: ' + event.target.value);
+    this.getWeather(null, this.state.searchItem);
   }
 
   handleChange(event) {
