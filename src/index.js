@@ -9,7 +9,11 @@ class Main extends React.Component {
     super(props);
     this.state = {
       searchItem: '',
-      weatherTemp: 0
+      weatherTemp: 0,
+      weatherTempChange: 0,
+      weatherHumidity: 0,
+      weatherWindSpeed: 0,
+      weatherWindDirection: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,26 +25,22 @@ class Main extends React.Component {
     navigator.geolocation.getCurrentPosition(pos => {
       this.getWeather(pos);
     }, () => console.log('error'));
+
   }
 
   getWeather(pos) {
     $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' +
       pos.coords.latitude + '&lon=' + pos.coords.longitude +
       '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb', (data) => {
-      let prefix = 'wi wi-owm-',
-          weatherCode = data.weather[0].id,
-          weatherHumidity = data.main.humidity,
-          weatherWindSpeed = data.wind.speed,
-          weatherWindDirection = data.wind.deg,
-          weatherClass = '';
-      this.setState({weatherTemp: Math.round(data.main.temp)});
-      weatherClass = prefix + this.dayOrNight() + weatherCode;
-      document.querySelector('#input-field').value = data.name;
-      document.querySelector('.weather-card-front-temperature').innerHTML = this.state.weatherTemp + '\u00B0C';
-      document.querySelector('.weather-card-front-icon').className = weatherClass;
-      document.querySelector('.weather-card-back-humidity-value').innerHTML = weatherHumidity + '%';
-      document.querySelector('.weather-card-back-wind-card-speed').innerHTML = Math.round(weatherWindSpeed) + ' m/s';
-      document.querySelector('.wi-wind').classList.add('towards-' + Math.round(weatherWindDirection) + '-deg');
+        this.setState({
+          searchItem: data.name,
+          weatherIcon: ('wi wi-owm-' + this.dayOrNight() + data.weather[0].id),
+          weatherHumidity: data.main.humidity + '\u00B0C',
+          weatherTemp: data.main.temp,
+          weatherTempChange: Math.round(data.main.temp) + '\u00B0C',
+          weatherWindSpeed: Math.round(data.wind.speed) + ' m/s',
+          weatherWindDirection: Math.round(data.wind.deg)
+        });
     });
   }
 
@@ -72,9 +72,9 @@ class Main extends React.Component {
       opacity: 0
     }, 500, () => {
       if (displayedTemperature[3] === 'C') {
-        document.querySelector('.weather-card-front-temperature').innerHTML = Math.round((this.state.weatherTemp * 9/5 + 32)) + '\u00B0F';
+        this.setState({weatherTempChange: Math.round((this.state.weatherTemp) * 9/5 + 32) + '\u00B0F'});
       } else {
-        document.querySelector('.weather-card-front-temperature').innerHTML = this.state.weatherTemp + '\u00B0C';
+        this.setState({weatherTempChange: Math.round(this.state.weatherTemp) + '\u00B0C'});
       }
       $('.weather-card-front-temperature').animate({
         opacity: 1
@@ -82,15 +82,12 @@ class Main extends React.Component {
     });
   }
 
+  flipOver(event) {
+    event.preventDefault();
+    document.querySelector('.weather-card').classList.toggle('flip-over');
+  }
+
   render() {
-
-    window.onload = function() {
-      // onclick event to show the back side of the weather card
-      document.querySelector('.weather-card').addEventListener('click', function() {
-        document.querySelector('.weather-card').classList.toggle('flip-over');
-      });
-
-    };
 
     return (
       <div>
@@ -102,18 +99,18 @@ class Main extends React.Component {
 
         <div id="content">
 
-          <div className="weather-card">
+          <div className="weather-card" onClick={this.flipOver}>
             <div className="weather-card-front">
               <div className="weather-card-front-weather">
-                <i className="weather-card-front-icon"></i>
+                <i className={this.state.weatherIcon}></i>
               </div>
-              <div className="weather-card-front-temperature"></div>
+              <div className="weather-card-front-temperature">{this.state.weatherTempChange}</div>
             </div>
             <div className="weather-card-back">
 
               <div className="weather-card-back-humidity">
                 <div>Humidity</div>
-                <div className="weather-card-back-humidity-value"></div>
+                <div className="weather-card-back-humidity-value">{this.state.weatherHumidity}</div>
               </div>
 
               <div className="weather-card-back-wind">
@@ -121,13 +118,13 @@ class Main extends React.Component {
                 <div className="weather-card-back-wind-card">
                   <div className="weather-card-back-wind-card-title">Wind direction</div>
                   <div className="weather-card-back-wind-card-direction">
-                    <i className="wi wi-wind"></i>
+                    <i className={"wi wi-wind towards-" + Math.round(this.state.weatherWindDirection) + "-deg"}></i>
                   </div>
                 </div>
 
                 <div className="weather-card-back-wind-card">
                   <div className="weather-card-back-wind-card-title">Wind speed</div>
-                  <div className="weather-card-back-wind-card-speed"></div>
+                  <div className="weather-card-back-wind-card-speed">{this.state.weatherWindSpeed}</div>
                 </div>
 
               </div>
