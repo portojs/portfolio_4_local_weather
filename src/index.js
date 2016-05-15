@@ -13,11 +13,13 @@ class Main extends React.Component {
       weatherTempChange: 0,
       weatherHumidity: 0,
       weatherWindSpeed: 0,
-      weatherWindDirection: 0
+      weatherWindDirection: 0,
+      flipOver: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.changeTempUnits = this.changeTempUnits.bind(this);
+    this.flipOver = this.flipOver.bind(this);
   }
 
   componentWillMount() {
@@ -67,11 +69,10 @@ class Main extends React.Component {
 
   changeTempUnits(event) {
     event.preventDefault();
-    let displayedTemperature = document.querySelector('.weather-card-front-temperature').innerHTML;
     $('.weather-card-front-temperature').animate({
       opacity: 0
     }, 500, () => {
-      if (displayedTemperature[3] === 'C') {
+      if (this.state.weatherTempChange.endsWith('C')) {
         this.setState({weatherTempChange: Math.round((this.state.weatherTemp) * 9/5 + 32) + '\u00B0F'});
       } else {
         this.setState({weatherTempChange: Math.round(this.state.weatherTemp) + '\u00B0C'});
@@ -84,7 +85,11 @@ class Main extends React.Component {
 
   flipOver(event) {
     event.preventDefault();
-    document.querySelector('.weather-card').classList.toggle('flip-over');
+    if (this.state.flipOver.length === 0) {
+      return this.setState({flipOver: 'flip-over'});
+    } else {
+      return this.setState({flipOver: ''});
+    }
   }
 
   render() {
@@ -99,7 +104,7 @@ class Main extends React.Component {
 
         <div id="content">
 
-          <div className="weather-card" onClick={this.flipOver}>
+          <div className={"weather-card " + this.state.flipOver} onClick={this.flipOver}>
             <div className="weather-card-front">
               <div className="weather-card-front-weather">
                 <i className={this.state.weatherIcon}></i>
