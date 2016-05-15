@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import 'whatwg-fetch';
 
 import './style.scss';
 
@@ -31,9 +32,13 @@ class Main extends React.Component {
   }
 
   getWeather(pos) {
-    $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' +
+    let link = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
       pos.coords.latitude + '&lon=' + pos.coords.longitude +
-      '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb', (data) => {
+      '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
+
+    fetch(link)
+      .then(response => response.json()
+    ).then(data => {
         this.setState({
           searchItem: data.name,
           weatherIcon: ('wi wi-owm-' + this.dayOrNight() + data.weather[0].id),
@@ -43,7 +48,7 @@ class Main extends React.Component {
           weatherWindSpeed: Math.round(data.wind.speed) + ' m/s',
           weatherWindDirection: Math.round(data.wind.deg)
         });
-    });
+      });
   }
 
   // check time of day at given location
