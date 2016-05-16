@@ -4,6 +4,8 @@ import 'whatwg-fetch';
 
 import './style.scss';
 
+import WeatherInput from './components/weather-input';
+
 class Main extends React.Component {
 
   constructor(props) {
@@ -17,7 +19,7 @@ class Main extends React.Component {
       weatherWindDirection: 0,
       flipOver: ''
     };
-    this.handleChange = this.handleChange.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.changeTempUnits = this.changeTempUnits.bind(this);
     this.flipOver = this.flipOver.bind(this);
@@ -70,13 +72,8 @@ class Main extends React.Component {
     }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    this.getWeather(null, this.state.searchItem);
-  }
-
-  handleChange(event) {
-    this.setState({searchItem: event.target.value});
+  handleSubmit(city) {
+    this.getWeather(null, city);
   }
 
   changeTempUnits(event) {
@@ -109,10 +106,7 @@ class Main extends React.Component {
     return (
       <div>
 
-        <form id="input" role="form" name="search-form" onSubmit={this.handleSubmit}>
-          <input id="input-field" type="text" placeholder="Enter city here" value={this.state.searchItem} onChange={this.handleChange}></input>
-          <button id="input-button" type="submit"><i className="fa fa-search fa-flip-horizontal"></i></button>
-        </form>
+        <WeatherInput submitSearch={this.handleSubmit} />
 
         <div id="content">
 
