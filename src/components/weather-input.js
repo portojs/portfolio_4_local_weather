@@ -9,13 +9,23 @@ export default class WeatherInput extends React.Component {
     };
   }
 
+  componentWillMount() {
+    this.setState({searchItem: this.props.cityName});
+  }
+  // componentDidMount() {
+  //   console.log('this.props.cityName: ' + this.props.cityName);
+  //   this.setState({searchItem: this.props.cityName});
+  // }
+
   handleChange(city) {
     this.setState({searchItem: city});
   }
 
   handleSubmit(event) {
+    let city = this.state.searchItem;
+
     event.preventDefault();
-    this.props.submitSearch(this.state.searchItem);
+    this.props.submitSearch(city);
   }
 
   render() {

@@ -11,7 +11,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchItem: '',
+      weatherCity: '',
       weatherTemp: 0,
       weatherTempChange: 0,
       weatherHumidity: 0,
@@ -19,38 +19,41 @@ class Main extends React.Component {
       weatherWindDirection: 0,
       flipOver: ''
     };
-    // this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.getWeather = this.getWeather.bind(this);
     this.changeTempUnits = this.changeTempUnits.bind(this);
     this.flipOver = this.flipOver.bind(this);
   }
 
   componentWillMount() {
     // get current position
-    navigator.geolocation.getCurrentPosition(pos => {
-      this.getWeather(pos);
-    }, () => console.log('error'));
-
+    this.getWeather();
   }
 
-  getWeather(pos, cityName) {
-    let link = '';
+  getWeather(cityName) {
+    var link = '';
 
     if (!cityName) {
-      link = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
-        pos.coords.latitude + '&lon=' + pos.coords.longitude +
-        '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
+      navigator.geolocation.getCurrentPosition(pos => {
+        link = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
+          pos.coords.latitude + '&lon=' + pos.coords.longitude +
+          '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
+      this.getData(link);
+      }, () => console.log('error'));
     } else {
-      link = 'http://api.openweathermap.org/data/2.5/weather?q=' +
-        cityName +
+      link = 'http://api.openweathermap.org/data/2.5/weather?q=' + cityName +
         '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
+      this.getData(link);
     }
+  }
 
+  // get weather data
+  getData(link) {
+    console.log('link: ' + link);
     fetch(link)
-      .then(response => response.json()
-    ).then(data => {
+      .then(response => response.json())
+      .then(data => {
         this.setState({
-          searchItem: data.name,
+          weatherCity: data.name,
           weatherIcon: ('wi wi-owm-' + this.dayOrNight() + data.weather[0].id),
           weatherHumidity: data.main.humidity + '%',
           weatherTemp: data.main.temp,
@@ -70,10 +73,6 @@ class Main extends React.Component {
     } else {
       return 'night-';
     }
-  }
-
-  handleSubmit(city) {
-    this.getWeather(null, city);
   }
 
   changeTempUnits(event) {
@@ -106,7 +105,7 @@ class Main extends React.Component {
     return (
       <div>
 
-        <WeatherInput submitSearch={this.handleSubmit} />
+        <WeatherInput cityName="dudu" submitSearch={this.getWeather} />
 
         <div id="content">
 
