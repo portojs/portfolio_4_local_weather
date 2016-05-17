@@ -166,4 +166,10 @@ body {
   outline: none;
   width: 350px;
   cursor: pointer;
+  -webkit-transition: background .5s ease-in-out;
+  -moz-transition: background .5s ease-in-out;
+  transition: background .5s ease-in-out;
+  &:hover {
+    background: darken($input-color, 15%);
+  }
 }
