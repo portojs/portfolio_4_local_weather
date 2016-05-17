@@ -5,24 +5,26 @@ import 'whatwg-fetch';
 import './style.scss';
 
 import WeatherInput from './components/weather-input';
+import WeatherCard from './components/weather-card';
+import WeatherUnitsButton from './components/weather-units-button';
 
 class Main extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      flipOverValue: '',
       weatherCity: '',
       weatherTemp: 0,
       weatherTempChange: 0,
       weatherHumidity: 0,
       weatherWindSpeed: 0,
-      weatherWindDirection: 0,
-      flipOver: ''
+      weatherWindDirection: 0
     };
     this.getWeather = this.getWeather.bind(this);
     this.changeTempUnits = this.changeTempUnits.bind(this);
-    this.flipOver = this.flipOver.bind(this);
     this.changeCityName = this.changeCityName.bind(this);
+    this.flipOver = this.flipOver.bind(this);
   }
 
   componentWillMount() {
@@ -49,7 +51,6 @@ class Main extends React.Component {
 
   // get weather data
   getData(link) {
-    console.log('link: ' + link);
     fetch(link)
       .then(response => response.json())
       .then(data => {
@@ -96,12 +97,11 @@ class Main extends React.Component {
     this.setState({weatherCity: cityName});
   }
 
-  flipOver(event) {
-    event.preventDefault();
-    if (this.state.flipOver.length === 0) {
-      return this.setState({flipOver: 'flip-over'});
+  flipOver() {
+    if (this.state.flipOverValue.length === 0) {
+      this.setState({flipOverValue: 'flip-over'});
     } else {
-      return this.setState({flipOver: ''});
+      this.setState({flipOverValue: ''});
     }
   }
 
@@ -110,45 +110,19 @@ class Main extends React.Component {
     return (
       <div>
 
-        <WeatherInput cityName="dudu" submitSearch={this.getWeather} changeCity={this.changeCityName} cityName={this.state.weatherCity} />
-
-        <div id="content">
-
-          <div className={"weather-card " + this.state.flipOver} onClick={this.flipOver}>
-            <div className="weather-card-front">
-              <div className="weather-card-front-weather">
-                <i className={this.state.weatherIcon}></i>
-              </div>
-              <div className="weather-card-front-temperature">{this.state.weatherTempChange}</div>
-            </div>
-            <div className="weather-card-back">
-
-              <div className="weather-card-back-humidity">
-                <div>Humidity</div>
-                <div className="weather-card-back-humidity-value">{this.state.weatherHumidity}</div>
-              </div>
-
-              <div className="weather-card-back-wind">
-
-                <div className="weather-card-back-wind-card">
-                  <div className="weather-card-back-wind-card-title">Wind direction</div>
-                  <div className="weather-card-back-wind-card-direction">
-                    <i className={"wi wi-wind towards-" + Math.round(this.state.weatherWindDirection) + "-deg"}></i>
-                  </div>
-                </div>
-
-                <div className="weather-card-back-wind-card">
-                  <div className="weather-card-back-wind-card-title">Wind speed</div>
-                  <div className="weather-card-back-wind-card-speed">{this.state.weatherWindSpeed}</div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <button id="toggle-temp-unit" onClick={this.changeTempUnits}>Change Temperature Units</button>
+        <WeatherInput
+          submitSearch={this.getWeather}
+          changeCity={this.changeCityName}
+          cityName={this.state.weatherCity} />
+        <WeatherCard
+          flipOver={this.flipOver}
+          flipOverValue={this.state.flipOverValue}
+          weatherIcon={this.state.weatherIcon}
+          weatherTempChange={this.state.weatherTempChange}
+          weatherHumidity={this.state.weatherHumidity}
+          weatherWindSpeed={this.state.weatherWindSpeed}
+          weatherWindDirection={this.state.weatherWindDirection} />
+        <WeatherUnitsButton changeTempUnits={this.changeTempUnits} />
 
       </div>
     );
