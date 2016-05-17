@@ -83,9 +83,15 @@ class Main extends React.Component {
       opacity: 0
     }, 500, () => {
       if (this.state.weatherTempChange.endsWith('C')) {
-        this.setState({weatherTempChange: Math.round((this.state.weatherTemp) * 9/5 + 32) + '\u00B0F'});
+        this.setState({
+          weatherTempChange: Math.round((this.state.weatherTemp) * 9/5 + 32) + '\u00B0F',
+          temperatureUnits: 'fahrenheit'
+        });
       } else {
-        this.setState({weatherTempChange: Math.round(this.state.weatherTemp) + '\u00B0C'});
+        this.setState({
+          weatherTempChange: Math.round(this.state.weatherTemp) + '\u00B0C',
+          temperatureUnits: 'celcius'
+        });
       }
       $('.weather-card-front-temperature').animate({
         opacity: 1

@@ -1,6 +1,6 @@
 $white      : #fff;
 $font-color : #1D3557;
-$input-color: #457B9D;
+$input-color: #1D3557;
 $card-color : #A8DADC;
 
 $stack-sans-serif: 'Alegreya Sans', sans-serif;
@@ -153,7 +153,7 @@ body {
 }
 
 .toggle-temp-unit {
-  background-color: $input-color;
+  background-color: lighten(#E63946, 30%);
   color: $white;
   font-size: 1.5em;
   display: block;
@@ -171,12 +171,30 @@ body {
   -moz-transition: background .5s ease-in-out;
   transition: background .5s ease-in-out;
   &:hover {
-    background: darken($input-color, 15%);
+    background-color: lighten(#E63946, 20%);
   }
-  div {
+  &.celcius .cel {
+    background-color: lighten(#E63946, 10%);
+  }
+  &.fahrenheit .fah {
+    background-color: lighten(#E63946, 15%);
+  }
+  .cel,
+  .fah {
     display: inline-block;
     padding: 30px 0;
     width: 50%;
     text-align: center;
+    -webkit-transition: background .5s ease-in-out;
+    -moz-transition: background .5s ease-in-out;
+    transition: background .5s ease-in-out;
+  }
+  .cel {
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+  }
+  .fah {
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
   }
 }
