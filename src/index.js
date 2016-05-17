@@ -13,6 +13,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      temperatureUnits: 'celcius',
       flipOverValue: '',
       weatherCity: '',
       weatherTemp: 0,
@@ -77,8 +78,7 @@ class Main extends React.Component {
     }
   }
 
-  changeTempUnits(event) {
-    event.preventDefault();
+  changeTempUnits() {
     $('.weather-card-front-temperature').animate({
       opacity: 0
     }, 500, () => {
@@ -122,7 +122,9 @@ class Main extends React.Component {
           weatherHumidity={this.state.weatherHumidity}
           weatherWindSpeed={this.state.weatherWindSpeed}
           weatherWindDirection={this.state.weatherWindDirection} />
-        <WeatherUnitsButton changeTempUnits={this.changeTempUnits} />
+        <WeatherUnitsButton
+          changeTempUnits={this.changeTempUnits}
+          temperatureUnits={this.state.temperatureUnits}/>
 
       </div>
     );
