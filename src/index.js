@@ -22,6 +22,7 @@ class Main extends React.Component {
     this.getWeather = this.getWeather.bind(this);
     this.changeTempUnits = this.changeTempUnits.bind(this);
     this.flipOver = this.flipOver.bind(this);
+    this.changeCityName = this.changeCityName.bind(this);
   }
 
   componentWillMount() {
@@ -91,6 +92,10 @@ class Main extends React.Component {
     });
   }
 
+  changeCityName(cityName) {
+    this.setState({weatherCity: cityName});
+  }
+
   flipOver(event) {
     event.preventDefault();
     if (this.state.flipOver.length === 0) {
@@ -105,7 +110,7 @@ class Main extends React.Component {
     return (
       <div>
 
-        <WeatherInput cityName="dudu" submitSearch={this.getWeather} />
+        <WeatherInput cityName="dudu" submitSearch={this.getWeather} changeCity={this.changeCityName} cityName={this.state.weatherCity} />
 
         <div id="content">
 
