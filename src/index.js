@@ -13,18 +13,20 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      temperatureUnits: 'celcius',
+      tempUnits: 'celcius',
       flipOverValue: '',
-      weatherCity: '',
-      weatherTemp: 0,
-      weatherTempChange: 0,
-      weatherHumidity: 0,
-      weatherWindSpeed: 0,
-      weatherWindDirection: 0
+      city: '',
+      collection: {
+        temp: 0,
+        tempChange: 0,
+        humidity: 0,
+        windSpeed: 0,
+        windDirection: 0
+      }
     };
     this.getWeather = this.getWeather.bind(this);
     this.changeTempUnits = this.changeTempUnits.bind(this);
-    this.changeCityName = this.changeCityName.bind(this);
+    this.changeCity = this.changeCity.bind(this);
     this.flipOver = this.flipOver.bind(this);
   }
 
@@ -56,13 +58,15 @@ class Main extends React.Component {
       .then(response => response.json())
       .then(data => {
         this.setState({
-          weatherCity: data.name,
-          weatherIcon: ('wi wi-owm-' + this.dayOrNight() + data.weather[0].id),
-          weatherHumidity: data.main.humidity + '%',
-          weatherTemp: data.main.temp,
-          weatherTempChange: Math.round(data.main.temp) + '\u00B0C',
-          weatherWindSpeed: Math.round(data.wind.speed) + ' m/s',
-          weatherWindDirection: Math.round(data.wind.deg)
+          city: data.name,
+          collection: {
+            icon: 'wi wi-owm-' + this.dayOrNight() + data.weather[0].id,
+            humidity: data.main.humidity + '%',
+            temp: data.main.temp,
+            tempChange: Math.round(data.main.temp) + '\u00B0C',
+            windSpeed: Math.round(data.wind.speed) + ' m/s',
+            windDirection: Math.round(data.wind.deg)
+          }
         });
       });
   }
@@ -79,18 +83,22 @@ class Main extends React.Component {
   }
 
   changeTempUnits() {
+    let selector = this.state.collection;
+
     $('.weather-card-front-temperature').animate({
       opacity: 0
     }, 500, () => {
-      if (this.state.weatherTempChange.endsWith('C')) {
+      if (this.state.collection.tempChange.endsWith('C')) {
+        selector.tempChange = Math.round((this.state.collection.temp) * 9/5 + 32) + '\u00B0F';
         this.setState({
-          weatherTempChange: Math.round((this.state.weatherTemp) * 9/5 + 32) + '\u00B0F',
-          temperatureUnits: 'fahrenheit'
+          tempUnits: 'fahrenheit',
+          collection: selector
         });
       } else {
+        selector.tempChange = Math.round(this.state.collection.temp) + '\u00B0C';
         this.setState({
-          weatherTempChange: Math.round(this.state.weatherTemp) + '\u00B0C',
-          temperatureUnits: 'celcius'
+          tempUnits: 'celcius',
+          collection: selector
         });
       }
       $('.weather-card-front-temperature').animate({
@@ -99,8 +107,8 @@ class Main extends React.Component {
     });
   }
 
-  changeCityName(cityName) {
-    this.setState({weatherCity: cityName});
+  changeCity(cityName) {
+    this.setState({city: cityName});
   }
 
   flipOver() {
@@ -118,19 +126,15 @@ class Main extends React.Component {
 
         <WeatherInput
           submitSearch={this.getWeather}
-          changeCity={this.changeCityName}
-          cityName={this.state.weatherCity} />
+          changeCity={this.changeCity}
+          cityName={this.state.city} />
         <WeatherCard
           flipOver={this.flipOver}
           flipOverValue={this.state.flipOverValue}
-          weatherIcon={this.state.weatherIcon}
-          weatherTempChange={this.state.weatherTempChange}
-          weatherHumidity={this.state.weatherHumidity}
-          weatherWindSpeed={this.state.weatherWindSpeed}
-          weatherWindDirection={this.state.weatherWindDirection} />
+          collection={this.state.collection} />
         <WeatherUnitsButton
           changeTempUnits={this.changeTempUnits}
-          temperatureUnits={this.state.temperatureUnits}/>
+          temperatureUnits={this.state.tempUnits}/>
 
       </div>
     );
