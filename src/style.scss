@@ -1,7 +1,8 @@
-$white      : #fff;
-$font-color : #1D3557;
-$input-color: #1D3557;
-$card-color : #A8DADC;
+$white       : #fff;
+$font-color  : #1D3557;
+$input-color : #1D3557;
+$card-color  : #A8DADC;
+$button-color: #E63946;
 
 $stack-sans-serif: 'Alegreya Sans', sans-serif;
 
@@ -153,7 +154,7 @@ body {
 }
 
 .toggle-temp-unit {
-  background-color: lighten(#E63946, 30%);
+  background-color: lighten($button-color, 30%);
   color: $white;
   font-size: 1.5em;
   display: block;
@@ -171,13 +172,13 @@ body {
   -moz-transition: background .5s ease-in-out;
   transition: background .5s ease-in-out;
   &:hover {
-    background-color: lighten(#E63946, 20%);
+    background-color: lighten($button-color, 20%);
   }
   &.celcius .cel {
-    background-color: lighten(#E63946, 10%);
+    background-color: lighten($button-color, 10%);
   }
   &.fahrenheit .fah {
-    background-color: lighten(#E63946, 15%);
+    background-color: lighten($button-color, 15%);
   }
   .cel,
   .fah {

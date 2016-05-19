@@ -36,37 +36,73 @@ class Main extends React.Component {
   }
 
   getWeather(cityName) {
-    var link = '';
+    let link = '',
+        forecastLink = '',
+        googleGeoLink = '',
+        temp;
 
     if (!cityName) {
       navigator.geolocation.getCurrentPosition(pos => {
         link = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
           pos.coords.latitude + '&lon=' + pos.coords.longitude +
           '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
-      this.getData(link);
+        forecastLink = 'https://api.forecast.io/forecast/0aeea7c01d5fbc8c67dc57d2aadca7ff/' + pos.coords.latitude + ',' + pos.coords.longitude;
+        googleGeoLink = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + pos.coords.latitude + ',' + pos.coords.longitude + '&key=AIzaSyAJCykTm7c8XBG0TTKOwWVR-wi1h-tNaSk';
+
+        cityName = fetch(googleGeoLink)
+          .then(response => response.json())
+          .then(data => {
+            this.setState({
+              city: data.results[0].address_components[3].long_name
+            });
+            return cityData;
+          });
+
+
+
+        // this.getData(forecastLink, this.getCityName(pos));
       }, () => console.log('error'));
     } else {
       link = 'http://api.openweathermap.org/data/2.5/weather?q=' + cityName +
         '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
-      this.getData(link);
+      forecastLink = 'https://api.forecast.io/forecast/0aeea7c01d5fbc8c67dc57d2aadca7ff/' + pos.coords.latitude + ',' + pos.coords.longitude;
+      // this.getData(forecastLink, cityName);
     }
   }
 
+  // get city name by sending coordinates to google
+  getCityName(pos) {
+    let link = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + pos.coords.latitude + ',' + pos.coords.longitude + '&key=AIzaSyAJCykTm7c8XBG0TTKOwWVR-wi1h-tNaSk',
+        cityData = '',
+        cityName = '';
+
+    cityName = fetch(link)
+      .then(response => response.json())
+      .then(data => {
+        cityData = data.results[0].address_components[3].long_name;
+        console.log('From inside', cityData);
+        return cityData;
+      });
+
+    return cityName;
+  }
+
   // get weather data
-  getData(link) {
+  getData(link, cityName) {
+    console.log(cityName);
     fetch(link)
       .then(response => response.json())
       .then(data => {
         this.setState({
-          city: data.name,
-          collection: {
-            icon: 'wi wi-owm-' + this.dayOrNight() + data.weather[0].id,
-            humidity: data.main.humidity + '%',
-            temp: data.main.temp,
-            tempChange: Math.round(data.main.temp) + '\u00B0C',
-            windSpeed: Math.round(data.wind.speed) + ' m/s',
-            windDirection: Math.round(data.wind.deg)
-          }
+          city: cityName
+          // collection: {
+          //   icon: 'wi wi-owm-' + this.dayOrNight() + data.weather[0].id,
+          //   humidity: data.main.humidity + '%',
+          //   temp: data.main.temp,
+          //   tempChange: Math.round(data.main.temp) + '\u00B0C',
+          //   windSpeed: Math.round(data.wind.speed) + ' m/s',
+          //   windDirection: Math.round(data.wind.deg)
+          // }
         });
       });
   }
