@@ -2,10 +2,6 @@ import React from 'react';
 
 const WeatherInput = (props) => {
 
-  // function handleChange(city) {
-  //   props.changeCity(city);
-  // }
-
   function handleSubmit(event) {
     event.preventDefault();
     props.getWeather(props.cityName);

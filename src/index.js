@@ -38,15 +38,13 @@ class Main extends React.Component {
 
   getWeather(cityName) {
     let link = '',
-        forecastLink = '',
-        googleLink = '',
-        temp;
+        googleLink = '';
 
+    this.setState({
+      collection: {}
+    });
     if (!cityName) {
       navigator.geolocation.getCurrentPosition(pos => {
-        // link = 'https://crossorigin.me/http://api.openweathermap.org/data/2.5/weather?lat=' +
-        //   pos.coords.latitude + '&lon=' + pos.coords.longitude +
-        //   '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
         link = 'https://crossorigin.me/https://api.forecast.io/forecast/0aeea7c01d5fbc8c67dc57d2aadca7ff/' + pos.coords.latitude + ',' + pos.coords.longitude;
         googleLink = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + pos.coords.latitude + ',' + pos.coords.longitude + '&key=AIzaSyAJCykTm7c8XBG0TTKOwWVR-wi1h-tNaSk';
 
@@ -61,9 +59,6 @@ class Main extends React.Component {
         this.getData(link);
       }, () => console.log('error'));
     } else {
-      // link = 'https://crossorigin.me/http://api.openweathermap.org/data/2.5/weather?q=' + cityName +
-      //   '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
-      // link = 'https://crossorigin.me/https://api.forecast.io/forecast/0aeea7c01d5fbc8c67dc57d2aadca7ff/' + pos.coords.latitude + ',' + pos.coords.longitude;
       googleLink = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + cityName + '&key=AIzaSyAJCykTm7c8XBG0TTKOwWVR-wi1h-tNaSk';
 
       fetch(googleLink)
@@ -77,23 +72,6 @@ class Main extends React.Component {
     }
   }
 
-  // get city name by sending coordinates to google
-  // getCityName(pos) {
-  //   let link = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + pos.coords.latitude + ',' + pos.coords.longitude + '&key=AIzaSyAJCykTm7c8XBG0TTKOwWVR-wi1h-tNaSk',
-  //       cityData = '',
-  //       cityName = '';
-  //
-  //   cityName = fetch(link)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       cityData = data.results[0].address_components[3].long_name;
-  //       console.log('From inside', cityData);
-  //       return cityData;
-  //     });
-  //
-  //   return cityName;
-  // }
-
   // get weather data
   getData(link) {
     fetch(link)
@@ -102,7 +80,6 @@ class Main extends React.Component {
         console.log(data);
         this.setState({
           collection: {
-            // icon: 'wi wi-owm-' + this.dayOrNight() + data.weather[0].id
             humidity: (data.currently.humidity * 100) + '%',
             tempCelcius: Math.round(((data.currently.temperature) - 32) * 5/9) + '\u00B0C',
             tempFahrenheit: Math.round(data.currently.temperature) + '\u00B0F',
@@ -110,7 +87,7 @@ class Main extends React.Component {
             windSpeedMeters: Math.round(((data.currently.windSpeed) * 1609) / 3600) + ' m/s',
             windSpeedMiles: Math.round(data.currently.windSpeed) + ' mph',
             windSpeed: Math.round(((data.currently.windSpeed) * 1609) / 3600) + ' m/s',
-            windDirection: Math.round(data.currently.windBearing),
+            windDirection: 'wi wi-wind towards-' + Math.round(data.currently.windBearing) + '-deg',
             icon: 'wi wi-forecast-io-' + data.currently.icon
           }
         });

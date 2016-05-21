@@ -24,7 +24,7 @@ const WeatherCard = (props) => {
             <div className="weather-card-back-wind-card">
               <div className="weather-card-back-wind-card-title">Wind direction</div>
               <div className="weather-card-back-wind-card-direction">
-                <i className={"wi wi-wind towards-" + props.collection.windDirection + "-deg"}></i>
+                <i className={props.collection.windDirection}></i>
               </div>
             </div>
 
