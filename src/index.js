@@ -96,12 +96,14 @@ class Main extends React.Component {
           // city: data.name,
           collection: {
             // icon: 'wi wi-owm-' + this.dayOrNight() + data.weather[0].id
-            // humidity: data.main.humidity + '%',
+            humidity: (data.currently.humidity * 100) + '%',
             tempCelcius: Math.round(((data.currently.temperature) - 32) * 5/9) + '\u00B0C',
             tempFahrenheit: Math.round(data.currently.temperature) + '\u00B0F',
             temp: Math.round(((data.currently.temperature) - 32) * 5/9) + '\u00B0C',
-            // windSpeed: Math.round(data.wind.speed) + ' m/s',
-            // windDirection: Math.round(data.wind.deg)
+            windSpeedMeters: Math.round(((data.currently.windSpeed) * 1609) / 3600) + ' m/s',
+            windSpeedMiles: Math.round(data.currently.windSpeed) + ' mph',
+            windSpeed: Math.round(((data.currently.windSpeed) * 1609) / 3600) + ' m/s',
+            windDirection: Math.round(data.currently.windBearing),
             icon: 'wi wi-forecast-io-' + data.currently.icon
           }
         });
@@ -122,23 +124,31 @@ class Main extends React.Component {
   changeTempUnits() {
     let selector = this.state.collection;
 
+    $('.weather-card-back-wind-card-speed').animate({
+      opacity: 0
+    }, 500);
     $('.weather-card-front-temperature').animate({
       opacity: 0
     }, 500, () => {
-      if (this.state.collection.temp.endsWith('C')) {
+      if (this.state.tempUnits === 'celcius') {
         selector.temp = this.state.collection.tempFahrenheit;
+        selector.windSpeed = this.state.collection.windSpeedMiles;
         this.setState({
           tempUnits: 'fahrenheit',
           collection: selector
         });
       } else {
         selector.temp = this.state.collection.tempCelcius;
+        selector.windSpeed = this.state.collection.windSpeedMeters;
         this.setState({
           tempUnits: 'celcius',
           collection: selector
         });
       }
       $('.weather-card-front-temperature').animate({
+        opacity: 1
+      }, 500);
+      $('.weather-card-back-wind-card-speed').animate({
         opacity: 1
       }, 500);
     });
