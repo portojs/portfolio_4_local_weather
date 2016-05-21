@@ -63,8 +63,17 @@ class Main extends React.Component {
     } else {
       // link = 'https://crossorigin.me/http://api.openweathermap.org/data/2.5/weather?q=' + cityName +
       //   '&units=metric&APPID=7b5fd7c59b65645c55cc078c587e19bb';
-      link = 'https://crossorigin.me/https://api.forecast.io/forecast/0aeea7c01d5fbc8c67dc57d2aadca7ff/' + pos.coords.latitude + ',' + pos.coords.longitude;
-      // this.getData(link);
+      // link = 'https://crossorigin.me/https://api.forecast.io/forecast/0aeea7c01d5fbc8c67dc57d2aadca7ff/' + pos.coords.latitude + ',' + pos.coords.longitude;
+      googleLink = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + cityName + '&key=AIzaSyAJCykTm7c8XBG0TTKOwWVR-wi1h-tNaSk';
+
+      fetch(googleLink)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.results[0].geometry.location.lat);
+          link = 'https://crossorigin.me/https://api.forecast.io/forecast/0aeea7c01d5fbc8c67dc57d2aadca7ff/' + data.results[0].geometry.location.lat + ',' + data.results[0].geometry.location.lng;
+          this.getData(link);
+        });
+
     }
   }
 
@@ -91,9 +100,7 @@ class Main extends React.Component {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        // console.log(data.currently.icon);
         this.setState({
-          // city: data.name,
           collection: {
             // icon: 'wi wi-owm-' + this.dayOrNight() + data.weather[0].id
             humidity: (data.currently.humidity * 100) + '%',
@@ -172,7 +179,7 @@ class Main extends React.Component {
       <div>
 
         <WeatherInput
-          submitSearch={this.getWeather}
+          getWeather={this.getWeather}
           changeCity={this.changeCity}
           cityName={this.state.city} />
         <WeatherCard

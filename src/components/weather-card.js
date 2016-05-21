@@ -1,7 +1,6 @@
 import React from 'react';
 
 const WeatherCard = (props) => {
-  let flipOverValue = '';
 
   return (
     <div id="content">
