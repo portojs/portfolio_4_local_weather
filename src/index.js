@@ -97,8 +97,9 @@ class Main extends React.Component {
           collection: {
             // icon: 'wi wi-owm-' + this.dayOrNight() + data.weather[0].id
             // humidity: data.main.humidity + '%',
-            // temp: data.main.temp,
-            // tempChange: Math.round(data.main.temp) + '\u00B0C',
+            tempCelcius: Math.round(((data.currently.temperature) - 32) * 5/9) + '\u00B0C',
+            tempFahrenheit: Math.round(data.currently.temperature) + '\u00B0F',
+            temp: Math.round(((data.currently.temperature) - 32) * 5/9) + '\u00B0C',
             // windSpeed: Math.round(data.wind.speed) + ' m/s',
             // windDirection: Math.round(data.wind.deg)
             icon: 'wi wi-forecast-io-' + data.currently.icon
@@ -124,14 +125,14 @@ class Main extends React.Component {
     $('.weather-card-front-temperature').animate({
       opacity: 0
     }, 500, () => {
-      if (this.state.collection.tempChange.endsWith('C')) {
-        selector.tempChange = Math.round((this.state.collection.temp) * 9/5 + 32) + '\u00B0F';
+      if (this.state.collection.temp.endsWith('C')) {
+        selector.temp = this.state.collection.tempFahrenheit;
         this.setState({
           tempUnits: 'fahrenheit',
           collection: selector
         });
       } else {
-        selector.tempChange = Math.round(this.state.collection.temp) + '\u00B0C';
+        selector.temp = this.state.collection.tempCelcius;
         this.setState({
           tempUnits: 'celcius',
           collection: selector
