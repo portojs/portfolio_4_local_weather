@@ -44,4 +44,11 @@ const WeatherCard = (props) => {
 
 }
 
+WeatherCard.propTypes = {
+  flipOver: React.PropTypes.func.isRequired,
+  flipOverValue: React.PropTypes.string.isRequired,
+  collection: React.PropTypes.object.isRequired
+};
+
+
 export default WeatherCard;

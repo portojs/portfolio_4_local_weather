@@ -16,4 +16,9 @@ const WeatherUnitsButton = (props) => {
 
 }
 
+WeatherUnitsButton.propTypes = {
+  changeTempUnits: React.PropTypes.func.isRequired,
+  temperatureUnits: React.PropTypes.string.isRequired
+};
+
 export default WeatherUnitsButton;

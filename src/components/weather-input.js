@@ -16,4 +16,10 @@ const WeatherInput = (props) => {
 
 }
 
+WeatherInput.propTypes = {
+  getWeather: React.PropTypes.func.isRequired,
+  changeCity: React.PropTypes.func.isRequired,
+  cityName: React.PropTypes.string.isRequired
+};
+
 export default WeatherInput;
