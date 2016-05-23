@@ -32,10 +32,11 @@ class Main extends React.Component {
   }
 
   componentWillMount() {
-    // get current position
+    // display weather for the current position
     this.getWeather();
   }
 
+  // use API
   getWeather(cityName) {
     let link = '',
         googleLink = '';
@@ -64,7 +65,6 @@ class Main extends React.Component {
       fetch(googleLink)
         .then(response => response.json())
         .then(data => {
-          console.log(data.results[0].geometry.location.lat);
           link = 'https://crossorigin.me/https://api.forecast.io/forecast/0aeea7c01d5fbc8c67dc57d2aadca7ff/' + data.results[0].geometry.location.lat + ',' + data.results[0].geometry.location.lng;
           this.getData(link);
         });
@@ -72,7 +72,7 @@ class Main extends React.Component {
     }
   }
 
-  // get weather data
+  // get weather data and display it
   getData(link) {
     fetch(link)
       .then(response => response.json())
@@ -105,6 +105,7 @@ class Main extends React.Component {
     }
   }
 
+  // imperial or metric units
   changeTempUnits() {
     let selector = this.state.collection;
 

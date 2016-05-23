@@ -102,6 +102,13 @@ body {
     &-weather i {
       padding-top: 50px;
     }
+    &-loading {
+      font-size: 2em;
+      text-align: center;
+      line-height: 350px;
+      height: 350px;
+      width: 350px;
+    }
   }
   &-back {
     background-color: $card-color;
@@ -145,6 +152,13 @@ body {
           padding-top: .73em;
         }
       }
+    }
+    &-loading {
+      font-size: 2em;
+      text-align: center;
+      line-height: 350px;
+      height: 350px;
+      width: 350px;
     }
   }
 }
