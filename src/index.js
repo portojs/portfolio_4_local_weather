@@ -10,25 +10,25 @@ import WeatherUnitsButton from './components/weather-units-button';
 
 class Main extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      tempUnits: 'celcius',
-      flipOverValue: '',
-      city: '',
-      collection: {
-        temp: 0,
-        tempChange: 0,
-        humidity: 0,
-        windSpeed: 0,
-        windDirection: 0,
-        icon: ''
-      }
-    };
-    this.getWeather = this.getWeather.bind(this);
-    this.changeTempUnits = this.changeTempUnits.bind(this);
-    this.changeCity = this.changeCity.bind(this);
-    this.flipOver = this.flipOver.bind(this);
+constructor(props) {
+  super(props);
+  this.state = {
+    tempUnits: 'celcius',
+    flipOverValue: '',
+    city: '',
+    collection: {
+      temp: 0,
+      tempChange: 0,
+      humidity: 0,
+      windSpeed: 0,
+      windDirection: 0,
+      icon: ''
+    }
+  };
+  this.getWeather = this.getWeather.bind(this);
+  this.changeTempUnits = this.changeTempUnits.bind(this);
+  this.changeCity = this.changeCity.bind(this);
+  this.flipOver = this.flipOver.bind(this);
   }
 
   componentWillMount() {
@@ -36,39 +36,37 @@ class Main extends React.Component {
     this.getWeather();
   }
 
+  getCurrentLocation() {
+    fetch('http://ip-api.com/json').then(response => response.json()).then(data => console.log(data));
+  }
+
   // use API
   getWeather(cityName) {
     let link = '',
-        googleLink = '';
+      googleLink = '';
 
     this.setState({
       collection: {}
     });
+
     if (!cityName) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        link = 'https://crossorigin.me/https://api.forecast.io/forecast/0aeea7c01d5fbc8c67dc57d2aadca7ff/' + pos.coords.latitude + ',' + pos.coords.longitude;
-        googleLink = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + pos.coords.latitude + ',' + pos.coords.longitude + '&key=AIzaSyAJCykTm7c8XBG0TTKOwWVR-wi1h-tNaSk';
-
-        cityName = fetch(googleLink)
-          .then(response => response.json())
-          .then(data => {
-            this.setState({
-              city: data.results[0].address_components[3].long_name
-            });
-          });
-
-        this.getData(link);
-      }, () => console.log('error'));
-    } else {
-      googleLink = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + cityName + '&key=AIzaSyAJCykTm7c8XBG0TTKOwWVR-wi1h-tNaSk';
-
-      fetch(googleLink)
+      // get current coordinates
+      fetch('http://ip-api.com/json')
         .then(response => response.json())
         .then(data => {
-          link = 'https://crossorigin.me/https://api.forecast.io/forecast/0aeea7c01d5fbc8c67dc57d2aadca7ff/' + data.results[0].geometry.location.lat + ',' + data.results[0].geometry.location.lng;
+          // create a link using current coordinates
+          link = "http://api.openweathermap.org/data/2.5/weather?lat=" + data.lat + "&lon=" + data.lon + "&units=imperial&APPID=7b5fd7c59b65645c55cc078c587e19bb";
+          // get current city name
+          this.setState({
+            city: data.city
+          });
+          // get weather
           this.getData(link);
         });
-
+    } else {
+      // create a link using city name
+      link = 'http://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&units=imperial&APPID=7b5fd7c59b65645c55cc078c587e19bb';
+      this.getData(link);
     }
   }
 
@@ -80,25 +78,25 @@ class Main extends React.Component {
         console.log(data);
         this.setState({
           collection: {
-            humidity: (data.currently.humidity * 100) + '%',
-            tempCelcius: Math.round(((data.currently.temperature) - 32) * 5/9) + '\u00B0C',
-            tempFahrenheit: Math.round(data.currently.temperature) + '\u00B0F',
-            temp: Math.round(((data.currently.temperature) - 32) * 5/9) + '\u00B0C',
-            windSpeedMeters: Math.round(((data.currently.windSpeed) * 1609) / 3600) + ' m/s',
-            windSpeedMiles: Math.round(data.currently.windSpeed) + ' mph',
-            windSpeed: Math.round(((data.currently.windSpeed) * 1609) / 3600) + ' m/s',
-            windDirection: 'wi wi-wind towards-' + Math.round(data.currently.windBearing) + '-deg',
-            icon: 'wi wi-forecast-io-' + data.currently.icon
+            humidity: Math.round(data.main.humidity) + '%',
+            tempCelcius: Math.round(((data.main.temp) - 32) * 5 / 9) + '\u00B0C',
+            tempFahrenheit: Math.round(data.main.temp) + '\u00B0F',
+            temp: Math.round(((data.main.temp) - 32) * 5 / 9) + '\u00B0C',
+            windSpeedMeters: Math.round(data.wind.speed) + ' m/s',
+            windSpeedMiles: Math.round(((data.wind.speed) / 1609) * 3600) + ' mph',
+            windSpeed: Math.round(data.wind.speed) + ' m/s',
+            windDirection: 'wi wi-wind towards-' + Math.round(data.wind.deg) + '-deg',
+            icon: 'wi wi-owm-' + this.dayOrNight() + data.weather[0].id
           }
         });
       });
   }
 
-  // check time of day at given location
+  // check time of day
   dayOrNight() {
     var today = new Date(),
-        hour = today.getHours();
-    if(hour > 6 && hour < 20) {
+      hour = today.getHours();
+    if (hour > 6 && hour < 20) {
       return 'day-';
     } else {
       return 'night-';
@@ -140,14 +138,21 @@ class Main extends React.Component {
   }
 
   changeCity(cityName) {
-    this.setState({city: cityName});
+    this.setState({
+      city: cityName
+    });
   }
 
+  // flip over the weather card
   flipOver() {
     if (this.state.flipOverValue.length === 0) {
-      this.setState({flipOverValue: 'flip-over'});
+      this.setState({
+        flipOverValue: 'flip-over'
+      });
     } else {
-      this.setState({flipOverValue: ''});
+      this.setState({
+        flipOverValue: ''
+      });
     }
   }
 
@@ -171,7 +176,6 @@ class Main extends React.Component {
       </div>
     );
   }
-
 }
 
 ReactDOM.render(<Main />, document.getElementById('container'));
